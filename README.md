@@ -49,9 +49,6 @@
 		* One space after the # sign for comments in python
 		* No spaces between hyphens and the comment in html  <!--[comment]-->
 		* Defining variable usage should be on the same line, separated by a space
-* Branching
-	* Develop on the dev branch
-	* Discuss code with pull requests
 * Syntax
 	* Import in alphabetical order
 	* Tab size of 2
