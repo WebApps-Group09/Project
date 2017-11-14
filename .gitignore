@@ -1,0 +1,6 @@
+.DS_Store
+
+*.py[co]
+__pycache__
+dist/
+build/

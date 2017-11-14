@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2>Sign Up</h2>
+  <hr>
+  <form method="post">{% csrf_token %}
+    <div class="form-group">
+      <label class="control-label" for="id_username">{{form.username.label}}</label>
+      <input class="form-control" type="text" name="username" id="id_username" aria-describedby="usernameHelp" required autofocus maxlength="150" {% if form.username.value %}value="{{form.username.value}}"{% endif %} />
+      <small id="usernameHelp" class="form-text text-muted">{{form.username.help}}</small>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="id_password">{{form.password.label}}</label>
+      <input class="form-control" type="password" name="password" id="id_password" maxlength="128" />
+    </div>
+    <hr>
+    <div class="form-group row">
+      <div class="col-xs-6">
+        <label class="control-label" for="id_first_name">{{form.first_name.label}}</label>
+        <input class="form-control" type="text" name="first_name" id="id_first_name" maxlength="30" {% if form.first_name.value %}value="{{form.first_name.value}}"{% endif %} />
+      </div>
+      <div class="col-xs-6">
+        <label class="control-label" for="id_last_name">{{form.last_name.label}}</label>
+        <input class="form-control" type="text" name="last_name" id="id_first_name" maxlength="30" {% if form.last_name.value %}value="{{form.last_name.value}}"{% endif %} />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="id_email">{{form.email.label}}</label>
+      <input class="form-control" type="email" name="email" id="id_first_name" maxlength="254" {% if form.email.value %}value="{{form.email.value}}"{% endif %} />
+    </div>
+    <input class="btn btn-default" type="submit" value="Submit">
+  </form>
+  <br>
+  <p><a href="{% url 'login' %}">Existing user?</a></p>
+</div>
+{% endblock %}
