@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %}
+{% extends "base.html" %}
 {% block title %}List of Podcasts{% endblock %}
 
 {% block body %}
@@ -24,7 +24,7 @@
         </div>
         {% endfor %}
       {% else %}
-        <p>No existing podcasts &#8594; <a href="{% url 'create' %}">Create a podcast</a></p>
+        <p>No podcasts found</p>
       {% endif %}
     </div>
     <!-- Sidebar widgets -->
@@ -65,7 +65,7 @@
                 {% endif %}
               {% endfor %}
             {% else  %}
-              <p>No Pods.</p>
+              <p>No Pods</p>
             {% endif %}
           </div>
         </div>

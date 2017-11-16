@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView
@@ -7,16 +8,12 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from podlife.forms import CommentsForm
 from podlife.models import Comments, Podcasts, Topics
 
-class Profile(LoginRequiredMixin, TemplateView):
-  template_name = 'profile.html'
+## Main Pages
 
 class HomePage(TemplateView):
   template_name = 'home.html'
 
-class Statistics(LoginRequiredMixin, TemplateView):
-  template_name = 'statistics.html'
-
-class PodcastListView(ListView):
+class PodcastList(ListView):
   template_name = 'list_podcasts.html'
   model = Podcasts
   context_object_name = 'podcasts'
@@ -36,7 +33,7 @@ class PodcastListView(ListView):
     return context
 
   def get_context_data(self, **kwargs):
-    podcasts = super(PodcastListView, self).get_context_data(**kwargs)
+    podcasts = super(PodcastList, self).get_context_data(**kwargs)
     podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
     podcasts['topics'] = Topics.objects.all()
     return podcasts
@@ -76,7 +73,38 @@ class PodcastView(TemplateView):
         comment.save()
       return HttpResponseRedirect('/podcast/' + kwargs['slugfield'] + '/')
 
-class PodcastsCreate(LoginRequiredMixin, CreateView):
+
+## Dashboard
+
+class Dashboard(LoginRequiredMixin, TemplateView):
+  template_name = 'dashboard.html'
+
+class Statistics(LoginRequiredMixin, TemplateView):
+  template_name = 'statistics.html'
+
+class UserSettings(LoginRequiredMixin, UpdateView):
+  template_name = 'settings.html'
+  model = User
+  fields = ['first_name', 'last_name', 'email']
+  success_url = '/dashboard/settings/'
+
+  def get_object(self, queryset=None):
+    return self.request.user
+
+  def get_context_data(self, **kwargs):
+    context = super(UserSettings, self).get_context_data(**kwargs)
+    return context
+
+class PodcastManage(LoginRequiredMixin, ListView):
+  template_name = 'manage_podcasts.html'
+  model = Podcasts
+  context_object_name = 'podcasts'
+
+  def get_queryset(self):
+    context = Podcasts.objects.filter(author__id=self.request.user.id)
+    return context
+
+class PodcastCreate(LoginRequiredMixin, CreateView):
   template_name = 'podcast_form.html'
   model = Podcasts
   fields = ['title', 'description', 'audio_file', 'file_type']
@@ -85,8 +113,8 @@ class PodcastsCreate(LoginRequiredMixin, CreateView):
     return self.success_url
 
   def get_context_data(self, **kwargs):
-    context = super(PodcastsCreate, self).get_context_data(**kwargs)
-    context['action'] = 'Create'
+    context = super(PodcastCreate, self).get_context_data(**kwargs)
+    context['title'] = 'Upload a Podcast'
     context['topics'] = Topics.objects.all()
     return context
 
@@ -95,12 +123,11 @@ class PodcastsCreate(LoginRequiredMixin, CreateView):
     slugfield = ''.join(w for w in form.instance.title.lower().replace(' ','_') if (w.isalnum() or w=='_'))
     form.instance.slugfield = slugfield
     self.success_url = '/podcast/' + slugfield
-    return super(PodcastsCreate, self).form_valid(form)
+    return super(PodcastCreate, self).form_valid(form)
 
-class PodcastsUpdate(UpdateView):
+class PodcastUpdate(LoginRequiredMixin, UpdateView):
   template_name = 'podcast_form.html'
   model = Podcasts
-  action = 'Edit'
   fields = ['title', 'description', 'audio_file', 'file_type']
   slug_field = 'slugfield'
   slug_url_kwarg = 'slugfield'
@@ -109,8 +136,8 @@ class PodcastsUpdate(UpdateView):
     return self.success_url
 
   def get_context_data(self, **kwargs):
-    context = super(PodcastsUpdate, self).get_context_data(**kwargs)
-    context['action'] = 'Edit'
+    context = super(PodcastUpdate, self).get_context_data(**kwargs)
+    context['title'] = 'Edit Podcast'
     context['topics'] = Topics.objects.all()
     print(context['topics'])
     return context
@@ -121,4 +148,4 @@ class PodcastsUpdate(UpdateView):
     form.instance.slugfield = slugfield
     form.instance.views -= 1 # ignore view count increment on redirect
     self.success_url = '/podcast/' + slugfield
-    return super(PodcastsUpdate, self).form_valid(form)
+    return super(PodcastUpdate, self).form_valid(form)

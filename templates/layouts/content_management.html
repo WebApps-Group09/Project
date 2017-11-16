@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %}
+{% extends "base.html" %}
 {% load staticfiles %}
 {% block title %}Content Management{% endblock %}
 
@@ -6,27 +6,33 @@
 {% endblock %}
 
 {% block sidebar %}
-<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+<ul class="navbar-nav navbar-sidenav">
   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-    <a class="nav-link" href="{% url 'stats' %}">
+    <a class="nav-link" href="{% url 'dashboard' %}">
       <i class="fa fa-fw fa-dashboard"></i>
+      <span class="nav-link-text">Dashboard</span>
+    </a>
+  </li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Statistics">
+    <a class="nav-link" href="{% url 'stats' %}">
+      <i class="fa fa-fw fa-area-chart"></i>
       <span class="nav-link-text">Statistics</span>
     </a>
   </li>
-  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="MyPodcasts">
-    <a class="nav-link" href="{% url 'profile' %}">
-      <i class="fa fa-fw fa-user"></i>
-      <span class="nav-link-text">Profile</span>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Upload">
+    <a class="nav-link" href="{% url 'create' %}">
+      <i class="fa fa-fw fa-upload"></i>
+      <span class="nav-link-text">Upload a Podcast</span>
     </a>
   </li>
-  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="CreatePodcast">
-    <a class="nav-link" href="{% url 'create' %}">
-      <i class="fa fa-fw fa-plus"></i>
-      <span class="nav-link-text">Create Podcast</span>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage">
+    <a class="nav-link" href="{% url 'manage' %}">
+      <i class="fa fa-fw fa-user"></i>
+      <span class="nav-link-text">Manage Podcasts</span>
     </a>
   </li>
   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
-    <a class="nav-link" href="{% url 'password_change' %}">
+    <a class="nav-link" href="{% url 'settings' %}">
       <i class="fa fa-fw fa-cog"></i>
       <span class="nav-link-text">Settings</span>
     </a>

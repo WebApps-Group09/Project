@@ -38,6 +38,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            os.path.join(BASE_DIR, 'templates/layouts/'),
+            os.path.join(BASE_DIR, 'templates/registration/'),
+            os.path.join(BASE_DIR, 'templates/dashboard/'),
             os.path.join(BASE_DIR, 'templates/'),
         ],
         'APP_DIRS': True,
@@ -94,7 +97,6 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/var/www/static/',
 ]
 
 LOGIN_URL = '/login/'

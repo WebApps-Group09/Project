@@ -39,6 +39,7 @@ body {
 }
 
 #welcome {
+  font-family: 'Slabo 27px', serif;
 	margin-top: 100px;
 	text-align: center;
 	color: white;
