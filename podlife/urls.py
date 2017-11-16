@@ -6,6 +6,7 @@ from podlife.views import *
 
 urlpatterns = [
 	url(r'^$', PodcastListView.as_view(), name='home'),
+    url(r'^home', LandingPage.as_view(), name='landing'),
 	url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
 	url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
 	url(r'^password_change/$', auth_views.PasswordChangeView.as_view(), name='password_change'),
