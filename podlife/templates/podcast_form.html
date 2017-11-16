@@ -1,8 +1,8 @@
-{% extends "base.html" %}
+{% extends "sidebar_base.html" %}
 {% block title %}{{ action }} Podcast{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
   <h2>{{ action }} Podcast</h2>
   <hr>
   <form method="post">
@@ -20,7 +20,7 @@
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="id_topics">Topic</label>
+          <label for="id_topics">Pod</label>
           <select class="form-control" id="id_topics" aria-describedby="topicsHelp">
             {% for topic in topics %}
               <option value="{{ topic.id }}">{{ topic.topic }}</option>
@@ -47,6 +47,13 @@
       </div>
     </div>
     <hr>
+	<h2>Add Pictures</h2>
+	<div class="row">
+		<div id="addpicture">
+			<i class="fa fa-fw fa-plus"></i>
+		</div>
+	</div>
+	<hr>
     <div class="row">
       <div class="col-sm-12">
         <div class="form-group">

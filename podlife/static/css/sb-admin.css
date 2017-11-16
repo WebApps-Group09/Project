@@ -347,17 +347,3 @@ footer.sticky-footer {
 @media (min-width: 992px) {
   body.sidenav-toggled footer.sticky-footer {
     width: calc(100% - 55px); } }
-#logo {
-	height: 50px;
-	padding-right: 10px;
-}
-#addpicture {
-	height: 200px;
-	width: 200px;
-	background-color: #e9ecef;
-	color: rgba(52, 58, 64, 0.5);
-	text-align: center;
-	margin-bottom: 50px;
-	font-size: 50px;
-	padding-top: 55px;
-}

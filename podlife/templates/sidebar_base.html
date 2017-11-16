@@ -1,43 +1,51 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block css %}
-	<link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/sb-admin.css' %}">
 {% endblock %}
 
 {% block sidebar %}
 	<!-- sidebar nav -->
-	<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-		<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-			<a class="nav-link" href="{% url 'profile' %}">
-				<i class="fa fa-fw fa-dashboard"></i>
-				<span class="nav-link-text">Statistics</span>
-			</a>
+	  <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="#">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Statistics</span>
+          </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="MyPodcasts">
-			<a class="nav-link" href="#">
-				<i class="fa fa-fw fa-user"></i>
-				<span class="nav-link-text">My Podcasts</span>
-			</a>
+          <a class="nav-link" href="{% url 'profile' %}">
+            <i class="fa fa-fw fa-user"></i>
+            <span class="nav-link-text">Profile</span>
+          </a>
         </li>
 		<li class="nav-item" data-toggle="tooltip" data-placement="right" title="CreatePodcast">
-			<a class="nav-link" href="{% url 'create' %}">
-				<i class="fa fa-fw fa-plus"></i>
-				<span class="nav-link-text">Create Podcast</span>
-			</a>
+          <a class="nav-link" href="{% url 'create' %}">
+            <i class="fa fa-fw fa-plus"></i>
+            <span class="nav-link-text">Create Podcast</span>
+          </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
-			<a class="nav-link" href="#">
-				<i class="fa fa-fw fa-cog"></i>
-				<span class="nav-link-text">Settings</span>
-			</a>
+          <a class="nav-link" href="#">
+            <i class="fa fa-fw fa-cog"></i>
+            <span class="nav-link-text">Settings</span>
+          </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Logout">
-			<a class="nav-link" href="{% url 'logout' %}">
-				<i class="fa fa-fw fa-signout"></i>
-				<span class="nav-link-text">Logout</span>
-			</a>
+          <a class="nav-link" href="{% url 'logout' %}">
+            <i class="fa fa-fw fa-signout"></i>
+            <span class="nav-link-text">Logout</span>
+          </a>
         </li>
-    </ul>
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
 {% endblock %}
 
 {% block content %}
