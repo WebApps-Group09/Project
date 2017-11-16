@@ -9,7 +9,7 @@
 	<!-- sidebar nav -->
 	  <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{% url 'stats' %}">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Statistics</span>
           </a>
@@ -27,14 +27,14 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{% url 'password_change' %}">
             <i class="fa fa-fw fa-cog"></i>
             <span class="nav-link-text">Settings</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Logout">
           <a class="nav-link" href="{% url 'logout' %}">
-            <i class="fa fa-fw fa-signout"></i>
+            <i class="fa fa-fw fa-sign-out"></i>
             <span class="nav-link-text">Logout</span>
           </a>
         </li>
@@ -49,4 +49,7 @@
 {% endblock %}
 
 {% block content %}
+{% endblock %}
+
+{% block js %}
 {% endblock %}

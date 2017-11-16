@@ -2,22 +2,79 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
 	<h2>Podcasts</h2>
 	<hr>
-	<div class="row text-right">
-		<div class="form-group">
-			<form method="get" action="">
-    		<div class="col-xs-8 col-sm-9 search-bar">
-      		<p><input type="text" placeholder="Search podcast titles" class="form-control" value="{{ titlefilter }}" name="titlefilter"/></p>
-				</div>
-				<div class="col-xs-4 col-sm-3">
-					<p><input type="submit" class="btn btn-default btn-block" value="Search" name="search"/></p>
-				</div>
-			</form>
-    </div>
-  </div>
 	<div class="row">
+		<!-- Podcast List Column -->
+		<div class="col-md-8">
+			{% if podcasts %}
+				{% for podcast in podcasts %}
+				<div class="card mb-4">
+					<img class="card-img-top" src="#" alt="image for {{ podcast.title }}">
+					<div class="card-body">
+						<h2 class="card-title">{{ podcast.title }}</h2>
+						<p class="card-text">{{ podcast.content | slice:":125" }}...</p>
+						<a href="/podcast/{{podcast.slugfield}}/" class="btn btn-primary">Listen Now</a>
+					</div>
+					<div class="card-footer text-muted">
+						Posted on {{ podcast.created.date }} by
+						<a href="#">{{ podcast.author }}</a>
+					</div>
+				</div>
+				{% endfor %}
+			{% else %}
+				<p>No existing podcasts &#8594; <a href="{% url 'create' %}">Create a podcast</a></p>
+			{% endif %}
+		</div>
+		<!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+			<!-- Search Widget -->
+			<div class="card my-4">
+				<h5 class="card-header">Search</h5>
+				<div class="card-body">
+					<div class="form-group">
+						<form method="get" action="">
+							<div class="input-group">
+								<input type="text" placeholder="Search podcast titles" class="form-control" value="{{ titlefilter }}" name="titlefilter">
+								<span class="input-group-btn">
+									<button type="submit" class="btn btn-secondary" value="Search" name="search">Search</button>
+								</span>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Categories Widget -->
+			<div class="card my-4">
+				<h5 class="card-header">Pods</h5>
+				<div class="card-body">
+					<div class="row">
+						{% if topics %}
+							{% for topic in topics %}
+								{% if forloop.first %}
+									<div class="col-sm-4">
+								{% endif %}
+								<button class="tag" name="topicfilter" value="{{topic.topic}}" type="submit">{{ topic.topic }}</button>
+								{% if forloop.counter|divisibleby:3 %}
+									</div>
+									<div class="col-sm-4">
+								{% endif %}
+								{% if forloop.last %}
+									</div>
+								{% endif %}
+							{% endfor %}
+						{% else  %}
+							<p>No Pods.</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+  
+	<!-- <div class="row">
 		<div class="col-xs-8 col-sm-9">
 			{% if podcasts %}
 				{% for podcast in podcasts %}
@@ -46,6 +103,6 @@
 					<button class="tag" name="topicfilter" value="{{topic.topic}}" type="submit">{{ topic.topic }}</button>&nbsp;
 				{% endfor %}
 			</form>
-		</div>
+		</div> -->
 </div>
 {% endblock %}

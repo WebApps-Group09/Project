@@ -1,27 +1,27 @@
-{% extends "base.html" %}
+{% extends "sidebar_base.html" %}
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
   <h2>Profile</h2>
   <hr>
   <div class="row">
-    <div class="col-sm-3"><strong>First Name</strong></div>
+    <div class="col-sm-6"><strong>First Name</strong></div>
     <div class="col-sm-6">{{ user.first_name }}</div>
   </div>
   <hr>
   <div class="row">
-    <div class="col-sm-3"><strong>Last Name</strong></div>
+    <div class="col-sm-6"><strong>Last Name</strong></div>
     <div class="col-sm-6">{{ user.last_name }}</div>
   </div>
   <hr>
   <div class="row">
-    <div class="col-sm-3"><strong>Email</strong></div>
+    <div class="col-sm-6"><strong>Email</strong></div>
     <div class="col-sm-6">{{ user.email }}</div>
   </div>
   <hr>
   <div class="row">
-    <div class="col-sm-3"><strong>Created</strong></div>
+    <div class="col-sm-6"><strong>Created</strong></div>
     <div class="col-sm-6">{{ user.date_joined.date }}</div>
   </div>
 </div>

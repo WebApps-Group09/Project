@@ -30,6 +30,9 @@ class Profile(LoginRequiredMixin, TemplateView):
 class LandingPage(TemplateView):
 	template_name = 'landing.html'
 
+class Statistics(LoginRequiredMixin, TemplateView):
+	template_name = 'statistics.html'
+
 class PodcastListView(ListView):
 	template_name = 'list_podcasts.html'
 	model = Podcasts
