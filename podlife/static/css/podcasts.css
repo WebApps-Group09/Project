@@ -37,3 +37,29 @@ footer {
   color: #4e8ed8;
   text-decoration: underline;
 }
+
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+
+.row {
+    margin: 0 auto;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.column {
+    float: left;
+}
+
+.span_4 {
+    width: 33.3333%;
+}

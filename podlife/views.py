@@ -27,6 +27,9 @@ class Signup(CreateView):
 class Profile(LoginRequiredMixin, TemplateView):
 	template_name = 'profile.html'
 
+class LandingPage(TemplateView):
+	template_name = 'landing.html'
+
 class PodcastListView(ListView):
 	template_name = 'list_podcasts.html'
 	model = Podcasts
