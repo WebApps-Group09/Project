@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+{% block title %}Home{% endblock %}
+
+{{% load staticfiles %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/podlife/home.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <div class="row" id="background">
+    <div class="col-md-12" id="welcome">
+      <h1>Welcome to <strong>PodLife</strong></h1>
+      <h3>A new kind of podcast community.</h3>
+      <br>
+      <a href="#about" class="btn btn-primary">Learn More</a>  <a href="{% url 'signup' %}" class="btn btn-secondary" id="signupbtn">Sign Up</a>
+    </div>
+  </div>
+  <div class="row" id="about">
+    <div class="col-md-12">
+      <h1>About <strong>PodLife</strong></h1>
+    </div>
+  </div>
+</div>
+{% endblock %}

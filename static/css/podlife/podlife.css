@@ -1,0 +1,70 @@
+.body{
+  margin-top: 40px;
+}
+
+.content {
+  margin-top: 15px;
+}
+
+.container-fluid {
+  width: 100% !IMPORTANT;
+}
+
+.dropdown-menu {
+  left: auto;
+  right: 0;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+.clearfix {
+  display: inline-block;
+}
+* html .clearfix {
+  height: 1%;
+}
+.clearfix {
+  display: block;
+}
+
+.row {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.column {
+  float: left;
+}
+
+.span_4 {
+  width: 33.3333%;
+}
+
+#addpicture {
+  height: 150px;
+  width: 150px;
+  background-color: #e9ecef;
+  color: rgba(52, 58, 64, 0.5);
+  text-align: center;
+  font-size: 50px;
+  padding-top: 35px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+#logo {
+  height: 40px;
+  padding-right: 5px;
+  margin: 5px 0;
+}
+
+.container-fluid > .container {
+  margin-left: 0px;
+  width: 100% !IMPORTANT;
+}

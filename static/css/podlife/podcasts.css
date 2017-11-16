@@ -1,0 +1,21 @@
+.podcast {
+  height: 175px;
+}
+
+.podcasts {
+  padding-top: 0;
+  padding-right: 5px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+}
+
+.list-group-item-heading {
+  margin-top: 10px;
+}
+
+.tag {
+  all: unset;
+  cursor: pointer;
+  color: #4e8ed8;
+  text-decoration: underline;
+}

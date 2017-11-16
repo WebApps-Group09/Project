@@ -25,7 +25,7 @@ class Podcasts(models.Model):
     updated = models.DateTimeField(default=timezone.now, editable=False)
 
 class Comments(models.Model):
-	podcast = models.ForeignKey(Podcasts, on_delete=models.CASCADE)
-	author = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
-	comment = models.TextField()
-	created = models.DateTimeField(default=timezone.now, editable=False)
+    podcast = models.ForeignKey(Podcasts, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+    comment = models.TextField()
+    created = models.DateTimeField(default=timezone.now, editable=False)

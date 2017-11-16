@@ -1,0 +1,61 @@
+{% extends "layouts/content_management.html" %}
+{% load staticfiles %}
+{% block title %}Statistics{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <h2>Statistics</h2>
+  <hr>
+  <!-- Area chart example-->
+  <div class="card mb-3">
+    <div class="card-header">
+      <i class="fa fa-area-chart"></i> Your Listeners
+    </div>
+    <div class="card-body">
+      <canvas id="myAreaChart" width="100%" height="30"></canvas>
+    </div>
+  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+  </div>  
+  
+  <!-- Example pie chart card-->
+  <div class="col-lg-6" style="padding: 0px;">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-pie-chart"></i> Pod Breakdown
+      </div>
+      <div class="card-body">
+        <canvas id="myPieChart" width="100%" height="100"></canvas>
+      </div>
+      <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'vendor/jquery-easing/jquery.easing.compatibility.js' %}"></script>
+<script src="{% static 'vendor/chart.js/Chart.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.js' %}"></script>
+<script src="{% static 'js/sb-admin/sb-admin-datatables.min.js' %}"></script>
+<script src="{% static 'js/sb-admin/sb-admin-charts.min.js' %}"></script>
+<script>
+var ctx = document.getElementById("myPieChart");
+  var myPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ["Politics", "Humor", "Sports", "History"],
+      datasets: [{
+        data: [12.21, 15.58, 11.25, 8.32],
+        backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+      }],
+    },
+  });
+</script>
+{% endblock %}
