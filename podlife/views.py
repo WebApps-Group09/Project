@@ -1,5 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.utils import timezone
@@ -7,6 +6,18 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 
 from podlife.forms import CommentsForm
 from podlife.models import Comments, Podcasts, Topics
+
+## Admin Pages
+
+class ManageTopics(ListView):
+  template_name = 'manage_topics.html'
+  model = Topics
+  context_object_name = 'topics'
+
+class CreateTopic(CreateView):
+  template_name = 'create_topic.html'
+  model = Topics
+  fields = ['topic']
 
 ## Main Pages
 
@@ -81,7 +92,6 @@ class PodcastView(TemplateView):
         comment.save()
       return HttpResponseRedirect('/podcast/' + kwargs['slugfield'] + '/')
 
-
 ## Dashboard
 
 class Dashboard(LoginRequiredMixin, TemplateView):
@@ -112,7 +122,7 @@ class PodcastManage(LoginRequiredMixin, ListView):
     context = Podcasts.objects.filter(author__id=self.request.user.id)
     return context
 
-class PodcastCreate(LoginRequiredMixin, CreateView):
+class PodcastUpload(LoginRequiredMixin, CreateView):
   template_name = 'podcast_form.html'
   model = Podcasts
   fields = ['title', 'description', 'audio_file', 'file_type']
@@ -121,7 +131,7 @@ class PodcastCreate(LoginRequiredMixin, CreateView):
     return self.success_url
 
   def get_context_data(self, **kwargs):
-    context = super(PodcastCreate, self).get_context_data(**kwargs)
+    context = super(PodcastUpload, self).get_context_data(**kwargs)
     context['title'] = 'Upload a Podcast'
     context['topics'] = Topics.objects.all()
     return context
@@ -131,7 +141,7 @@ class PodcastCreate(LoginRequiredMixin, CreateView):
     slugfield = ''.join(w for w in form.instance.title.lower().replace(' ','_') if (w.isalnum() or w=='_'))
     form.instance.slugfield = slugfield
     self.success_url = '/podcast/' + slugfield
-    return super(PodcastCreate, self).form_valid(form)
+    return super(PodcastUpload, self).form_valid(form)
 
 class PodcastUpdate(LoginRequiredMixin, UpdateView):
   template_name = 'podcast_form.html'
