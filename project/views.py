@@ -2,6 +2,8 @@ from django.views.generic import CreateView
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 
+## Custom registration
+# Create a new user
 class Signup(CreateView):
   template_name = 'registration/signup.html'
   model = User

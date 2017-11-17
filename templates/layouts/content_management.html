@@ -13,6 +13,13 @@
       <span class="nav-link-text">Dashboard</span>
     </a>
   </li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Subscriptions">
+    <a class="nav-link" href="{% url 'subs' %}">
+      <i class="fa fa-fw fa-bell"></i>
+      <span class="nav-link-text">Subscriptions</span>
+    </a>
+  </li>
+  <li class="nav-divider"></li>
   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Statistics">
     <a class="nav-link" href="{% url 'stats' %}">
       <i class="fa fa-fw fa-line-chart"></i>
@@ -37,6 +44,7 @@
       <span class="nav-link-text">Settings</span>
     </a>
   </li>
+  <li class="nav-divider"></li>
   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Logout">
     <a class="nav-link" href="{% url 'logout' %}">
       <i class="fa fa-fw fa-sign-out"></i>

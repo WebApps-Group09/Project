@@ -16,6 +16,7 @@ urlpatterns = [
   url(r'^podcast/(?P<slugfield>[\w-]+)/', PodcastView.as_view()),
   url(r'^dashboard/', include([
     url(r'^$', Dashboard.as_view(), name='dashboard'),
+    url(r'^subs/$', Subscriptions.as_view(), name="subs"),
     url(r'^stats/$', Statistics.as_view(), name='stats'),
     url(r'^manage/', include ([
       url(r'^$', PodcastManage.as_view(), name='manage_podcasts'),
