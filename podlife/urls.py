@@ -5,7 +5,6 @@ from podlife.views import *
 
 urlpatterns = [
   url(r'^$', HomePage.as_view(), name='home'),
-  url(r'^home', LandingPage.as_view(), name='landing'),
   url(r'^control/', include([
     url(r'^topic/', include ([
       url(r'^$', ManageTopics.as_view(), name='manage_topics'),
