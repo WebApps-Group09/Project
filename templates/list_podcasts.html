@@ -55,7 +55,7 @@
                 {% if forloop.first %}
                   <div class="col-sm-4">
                 {% endif %}
-                <button class="tag" name="topicfilter" value="{{topic.topic}}" type="submit">{{ topic.topic }}</button>
+                <button class="btn btn-link" name="topicfilter" value="{{topic.topic}}" type="submit">{{ topic.topic }}</button>
                 {% if forloop.counter|divisibleby:3 %}
                   </div>
                   <div class="col-sm-4">

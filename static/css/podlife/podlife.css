@@ -71,3 +71,7 @@ body {
   margin-left: 0px;
   width: 100% !IMPORTANT;
 }
+
+.btn {
+	cursor: pointer !IMPORTANT;
+}
