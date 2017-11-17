@@ -1,7 +1,6 @@
 .fileContainer {
     overflow: hidden;
     position: relative;
-
 }
 
 .fileContainer [type=file] {
@@ -16,5 +15,4 @@
     right: 0;
     text-align: left;
     top: 0;
-    
 }

@@ -139,11 +139,16 @@ class PodcastUpload(LoginRequiredMixin, CreateView):
     return context
 
   def form_valid(self, form):
+    form.instance.topic = self.request.param['topics']
     form.instance.author = self.request.user
     slugfield = ''.join(w for w in form.instance.title.lower().replace(' ','_') if (w.isalnum() or w=='_'))
     form.instance.slugfield = slugfield
     self.success_url = '/podcast/' + slugfield
     return super(PodcastUpload, self).form_valid(form)
+
+  def form_invalid(self, form):
+    print(form.errors)
+    return HttpResponse("invalid")
 
 class PodcastUpdate(LoginRequiredMixin, UpdateView):
   template_name = 'podcast_form.html'

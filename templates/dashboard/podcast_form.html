@@ -2,7 +2,7 @@
 {% block title %}{{ title }}{% endblock %}
 {% load staticfiles %}
 {% block css %}
- <link rel="stylesheet" href="static/css/podlife/fileInput.css">
+ <link rel="stylesheet" href="{% static 'css/podlife/fileinput.css' %}">
 {% endblock %}
 {% block content %}
 
@@ -27,7 +27,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label class="control-label" for="id_topics">Pod</label>
-          <select class="form-control" id="id_topics" aria-describedby="topicsHelp">
+          <select name="topics" class="form-control" id="id_topics" aria-describedby="topicsHelp">
             {% for topic in topics %}
               <option value="{{ topic.id }}">{{ topic.topic }}</option>
             {% endfor %}
