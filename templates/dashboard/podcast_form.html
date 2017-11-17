@@ -11,7 +11,7 @@
 <div class="container-fluid">
   <h2>{{ title }}</h2>
   <hr>
-  <form method="post">
+  <form enctype="multipart/form-data" method="post">
     {% csrf_token %}
     <div class="row">
       <div class="col-sm-6">
@@ -35,17 +35,15 @@
           <small id="topicsHelp" class="form-text text-muted">Select the associated topic to your podcast.</small>
         </div>
         <div class="form-group">
-          <label class="fileContainer">
-            Audio file
-            <input id="test" type="file"/>
-          </label>
+          <label class="control-label" for="id_audio_file">{{ form.audio_file.label }}</label>
+          <input type="file" name="audio_file" id="id_audio_file" required />          
           <small id="fileHelp" class="form-text text-muted">Supported files: .wav, .mp3</small>
         </div>
         <div class="form-group">
           <label class="control-label" for="id_file_type">{{ form.file_type.label }}</label>
           <select name="file_type" aria-describedby="fileTypeHelp" class="form-control" id="id_file_type">
             {% for file_type in form.file_type %}
-              <option value="{{ file_type }}" selected />
+              {{ file_type }}
             {% endfor %}
           </select>
           <small id="fileTypeHelp" class="form-text text-muted">Select your file type.</small>

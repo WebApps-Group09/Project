@@ -18,3 +18,4 @@ class Signup(CreateView):
     self.success_url = '/login/'
     form.instance.password = make_password(form.instance.password)
     return super(Signup, self).form_valid(form)
+    

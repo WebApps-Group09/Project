@@ -38,11 +38,11 @@ class PodcastList(ListView):
       context = Podcasts.objects.order_by('-created')
     elif title_filter and topic_filter:
       context = Podcasts.objects.filter(title__icontains=title_filter)
-      context = Podcasts.objects.filter(tags__icontains=topic_filter)
+      context = Podcasts.objects.filter(topic__icontains=topic_filter)
     elif title_filter and not topic_filter:
       context = Podcasts.objects.filter(title__icontains=title_filter)
     elif topic_filter and not title_filter:
-      context = Podcasts.objects.filter(tags__icontains=topic_filter)
+      context = Podcasts.objects.filter(topic__icontains=topic_filter)
     return context
 
   def get_context_data(self, **kwargs):
@@ -69,11 +69,7 @@ class PodcastView(TemplateView):
     podcast = Podcasts.objects.get(slugfield=kwargs['slugfield'])
     podcast.views += 1
     podcast.save()
-
     comments = Comments.objects.filter(podcast_id=podcast.id).order_by('-created')
-    self.podcast_id = podcast.id
-    podcast.tags = ', '.join(podcast.tags)
-
     context = {}
     context['podcast'] = podcast
     context['comments'] = comments
@@ -139,11 +135,13 @@ class PodcastUpload(LoginRequiredMixin, CreateView):
     return context
 
   def form_valid(self, form):
-    form.instance.topic = self.request.param['topics']
+    topic_id = self.request.POST['topics']
+    form.instance.topic = Topics.objects.get(id=topic_id)
     form.instance.author = self.request.user
     slugfield = ''.join(w for w in form.instance.title.lower().replace(' ','_') if (w.isalnum() or w=='_'))
     form.instance.slugfield = slugfield
     self.success_url = '/podcast/' + slugfield
+    
     return super(PodcastUpload, self).form_valid(form)
 
   def form_invalid(self, form):
