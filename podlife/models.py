@@ -11,12 +11,13 @@ def file_path(instance, filename):
 
 class Topics(models.Model):
     topic = models.CharField(max_length=40, unique=True, blank=False)
-    description = models.TextField(null=True)
+    description = models.TextField(blank=True)
     num_podcasts = models.IntegerField(default=0, editable=False)
+    num_subscribers = models.IntegerField(default=0, editable=False)
 
 class PodcastsManager(models.Manager):
     def random(self):
-        count=self.aggregate(ids=Count('id'))['ids']
+        count = self.aggregate(ids=Count('id'))['ids']
         if count > 0:
             random_index=randint(0, count - 1)
             return self.all()[random_index]
@@ -26,7 +27,7 @@ class PodcastsManager(models.Manager):
 class Podcasts(models.Model):
     slugfield = models.SlugField(max_length=200, unique=True, editable=False)
     title = models.CharField(max_length=200, blank=False)
-    description = models.TextField(null=True)
+    description = models.TextField(blank=True)
     audio_file = models.FileField(upload_to=file_path, null=True)
     file_type = models.CharField(max_length=3, choices=(('WAV', '.wav'), ('MP3', '.mp3')), default='WAV')
     file_path = models.CharField(max_length=220, null=True, editable=False)
@@ -40,7 +41,7 @@ class Podcasts(models.Model):
     created = models.DateTimeField(default=timezone.now, editable=False)
     updated = models.DateTimeField(default=timezone.now, editable=False)
 
-    objects=PodcastsManager()
+    objects = PodcastsManager()
 
 class Comments(models.Model):
     podcast = models.ForeignKey(Podcasts, on_delete=models.CASCADE)

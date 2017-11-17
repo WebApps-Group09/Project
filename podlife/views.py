@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 
@@ -17,7 +17,9 @@ class ManageTopics(ListView):
 class CreateTopic(CreateView):
   template_name = 'create_topic.html'
   model = Topics
-  fields = ['topic']
+  slug_field = 'topic'
+  success_url = '/control/topic/'
+  fields = ['topic', 'description']
 
 ## Main Pages
 

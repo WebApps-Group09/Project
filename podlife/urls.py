@@ -5,9 +5,11 @@ from podlife.views import *
 
 urlpatterns = [
   url(r'^$', HomePage.as_view(), name='home'),
-  url(r'^topic/', include([
-    url(r'^$', ManageTopics.as_view(), name='manage_topics'),
-    url(r'^create/', CreateTopic.as_view(), name='create_topic'),
+  url(r'^control/', include([
+    url(r'^topic/', include ([
+      url(r'^$', ManageTopics.as_view(), name='manage_topics'),
+      url(r'^create/$', CreateTopic.as_view(), name='create_topic'),
+    ])),
   ])),
   url(r'^list/$', PodcastList.as_view(), name='list'),
   url(r'^random/$', random, name='random'),
@@ -20,6 +22,6 @@ urlpatterns = [
       url(r'^(?P<slugfield>[\w-]+)/', PodcastUpdate.as_view()),
     ])),
     url(r'^upload/$', PodcastUpload.as_view(), name='upload_podcast'),
-    url(r'^settings/', UserSettings.as_view(), name='settings')
+    url(r'^settings/$', UserSettings.as_view(), name='settings')
   ])),
 ]

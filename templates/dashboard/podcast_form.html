@@ -20,8 +20,8 @@
           <input type="text" name="title" {% if form.title.value %}value="{{ form.title.value }}"{% endif %} class="form-control" id="id_title" required maxlength="200" />
         </div>
         <div class="form-group">
-          <label class="control-label" for="id_content">{{ form.description.label }}</label>
-          <textarea name="content" cols="40" class="form-control" id="id_content" rows="7" >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
+          <label class="control-label" for="id_description">{{ form.description.label }}</label>
+          <textarea name="description" cols="40" class="form-control" id="id_description" rows="7" >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
         </div>
       </div>
       <div class="col-sm-6">
