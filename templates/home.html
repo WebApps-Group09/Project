@@ -14,7 +14,12 @@
       <h1>Welcome to <strong>PodLife</strong></h1>
       <h3>A new kind of podcast community.</h3>
       <br>
-      <a href="#about" class="btn btn-primary">Learn More</a>  <a href="{% url 'signup' %}" class="btn btn-secondary" id="signupbtn">Sign Up</a>
+      <a href="#about" class="btn btn-primary">Learn More</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'list' %}" class="btn btn-secondary" id="rightbtn">Podcasts</a>
+      {% else %}
+        <a href="{% url 'signup' %}" class="btn btn-secondary" id="rightbtn">Sign Up</a>
+      {% endif %}
     </div>
   </div>
   <div class="row" id="about">

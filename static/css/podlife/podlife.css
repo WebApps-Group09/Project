@@ -1,6 +1,8 @@
+body {
+  font-family: 'Lato', sans-serif;
+}
 .body {
   margin-top: 40px;
-  font-family: 'Lato', sans-serif;
 }
 
 .content {
@@ -62,7 +64,7 @@
 #logo {
   height: 40px;
   padding-right: 5px;
-  margin: 5px 0;
+  margin: 5px 10px 5px 0;
 }
 
 .container-fluid > .container {

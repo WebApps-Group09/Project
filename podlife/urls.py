@@ -6,6 +6,7 @@ from podlife.views import *
 urlpatterns = [
   url(r'^$', HomePage.as_view(), name='home'),
   url(r'^list/$', PodcastList.as_view(), name='list'),
+  url(r'^random/$', random, name='random'),
   url(r'^podcast/(?P<slugfield>[\w-]+)/', PodcastView.as_view()),
   url(r'^dashboard/', include([
     url(r'^$', Dashboard.as_view(), name='dashboard'),

@@ -38,6 +38,14 @@ class PodcastList(ListView):
     podcasts['topics'] = Topics.objects.all()
     return podcasts
 
+# Redirect to a random podcast
+def random(request):
+  podcast = Podcasts.objects.random()
+  if podcast:
+    return HttpResponseRedirect('/podcast/'+podcast.slugfield)
+  else:
+    return HttpResponseRedirect('/list/')
+
 class PodcastView(TemplateView):
   template_name = 'view_podcast.html'
 

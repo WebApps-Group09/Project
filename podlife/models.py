@@ -3,12 +3,23 @@ from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils import timezone
+from django.db.models import Count
+from random import randint
 
 def file_path(instance, filename):
     instance.file_path = 'podlife/uploads/'+instance.slugfield+'.wav'
 
 class Topics(models.Model):
     topic = models.CharField(max_length=40, unique=True, blank=False)
+
+class PodcastsManager(models.Manager):
+    def random(self):
+        count = self.aggregate(ids=Count('id'))['ids']
+        if count > 0:
+            random_index = randint(0, count - 1)
+            return self.all()[random_index]
+        else:
+            return None
 
 class Podcasts(models.Model):
     slugfield = models.SlugField(max_length=200, unique=True, editable=False)
@@ -23,6 +34,8 @@ class Podcasts(models.Model):
     num_comments = models.IntegerField(default = 0, editable=False)
     created = models.DateTimeField(default=timezone.now, editable=False)
     updated = models.DateTimeField(default=timezone.now, editable=False)
+
+    objects = PodcastsManager()
 
 class Comments(models.Model):
     podcast = models.ForeignKey(Podcasts, on_delete=models.CASCADE)
