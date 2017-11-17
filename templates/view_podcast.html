@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="container body">
+  <h2>{{podcast.title}}</h2>
+  <hr>
+  <div class="row">
+    <div class="col-sm-10">
+      <small class="text-muted">by <span>{{podcast.author.username}}</span></small><br>
+      <p>{{podcast.topic.topic}}</p>
+      <p>{{podcast.description}}</p>
+    </div>
+    <div class="col-sm-2">
+      {% if podcast.author.username == user.username %}
+      <p><input class="btn btn-default" type="submit" value="Edit Podcast" onclick="location.href='edit/';"/></p>
+      {% endif %}
+      <small>
+        <em class="text-muted">
+          <strong>Created:</strong> {{podcast.created.date|date:"m/d/y"}}<br>
+          <strong>Updated:</strong> {{podcast.updated.date|date:"m/d/y"}}<br>
+          <strong>Views:</strong> {{podcast.views}}<br>
+          <strong>Comments:</strong> {{podcast.num_comments}}
+        </em>
+      </small>
+    </div>
+  </div><!--/.row-->
+  <hr>
+  <h3>Comments</h3>
+  {% if user.is_authenticated %}
+    <form method="post">{% csrf_token %}
+      <div class="form-group">
+        <textarea name="comment" placeholder="Write a comment" cols="40" class="form-control" required rows="5"></textarea>
+      </div>
+      <input class="btn btn-default" type="submit" value="Post">
+    </form>
+    <br>
+  {% else %}
+    <p><a href="{% url 'login' %}?next={{request.path}}">Login</a> to comment</p>
+  {% endif %}
+  <hr>
+  {% if comments %}
+    <div class="list-group">
+      {% for comment in comments %}
+        <span class="list-group-item">
+          <p class="list-group-item-text">{{comment.comment}}</p>
+          <small>
+            <em class="text-muted">
+              <strong>{{comment.author.username}}</strong> on {{comment.created}}
+            </em>
+          </small>
+        </span>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No comments</p>
+  {% endif %}
+</div>
+{% endblock %}

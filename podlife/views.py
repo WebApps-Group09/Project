@@ -1,138 +1,187 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.hashers import make_password
-from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 
-from podlife.forms import CommentsForm
-from podlife.models import Comments, Podcasts, Topics, User
+from podlife.forms import CommentForm
+from podlife.models import Comment, Podcast, Topic
+from podlife.models import CreatorSubscription, TopicSubscription
 
-class Signup(CreateView):
-	template_name = 'registration/signup.html'
-	model = User
-	fields = ['username', 'first_name', 'last_name', 'email', 'password']
+## Admin Pages
+# Manage all topics - allows for editing/deletion
+class ManageTopics(ListView):
+  template_name = 'manage_topics.html'
+  model = Topic
+  context_object_name = 'topics'
 
-	def get_success_url(self):
-		return self.success_url
+# Create a new topic
+class CreateTopic(CreateView):
+  template_name = 'create_topic.html'
+  model = Topic
+  slug_field = 'topic'
+  success_url = '/control/topic/'
+  fields = ['topic', 'description']
 
-	def get_context_data(self, **kwargs):
-		context = super(Signup, self).get_context_data(**kwargs)
-		return context
+## Main Pages
+# Landing page for initial user interaction with the website
+class HomePage(TemplateView):
+  template_name = 'home.html'
 
-	def form_valid(self, form):
-		self.success_url = '/login/'
-		form.instance.password = make_password(form.instance.password)
-		return super(Signup, self).form_valid(form)
+# Main dashboard for viewing podcasts and their associated pods
+class PodcastList(ListView):
+  template_name = 'list_podcasts.html'
+  model = Podcast
+  context_object_name = 'podcasts'
 
-class Profile(LoginRequiredMixin, TemplateView):
-	template_name = 'profile.html'
+  def get_queryset(self):
+    title_filter = self.request.GET.get('titlefilter', '')
+    topic_filter = self.request.GET.get('topicfilter', '')
+    if not title_filter and not topic_filter:
+      context = Podcast.objects.order_by('-created')
+    elif title_filter and topic_filter:
+      context = Podcast.objects.filter(title__icontains=title_filter)
+      context = Podcast.objects.filter(topic__icontains=topic_filter)
+    elif title_filter and not topic_filter:
+      context = Podcast.objects.filter(title__icontains=title_filter)
+    elif topic_filter and not title_filter:
+      context = Podcast.objects.filter(topic__icontains=topic_filter)
+    return context
 
-class LandingPage(TemplateView):
-	template_name = 'landing.html'
+  def get_context_data(self, **kwargs):
+    podcasts = super(PodcastList, self).get_context_data(**kwargs)
+    podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
+    podcasts['topics'] = Topic.objects.all()
+    return podcasts
 
-class PodcastListView(ListView):
-	template_name = 'list_podcasts.html'
-	model = Podcasts
-	context_object_name = 'podcasts'
+# Function called on /random/ to redirect to a random podcast
+def random(request):
+  podcast = Podcast.objects.random()
+  if podcast:
+    return HttpResponseRedirect('/podcast/'+podcast.slugfield)
+  else:
+    return HttpResponseRedirect('/list/')
 
-	def get_queryset(self):
-		title_filter = self.request.GET.get('titlefilter', '')
-		topic_filter = self.request.GET.get('topicfilter', '')
-		if not title_filter and not topic_filter:
-			context = Podcasts.objects.order_by('-created')
-		elif title_filter and topic_filter:
-			context = Podcasts.objects.filter(title__icontains=title_filter)
-			context = Podcasts.objects.filter(tags__icontains=topic_filter)
-		elif title_filter and not topic_filter:
-			context = Podcasts.objects.filter(title__icontains=title_filter)
-		elif topic_filter and not title_filter:
-			context = Podcasts.objects.filter(tags__icontains=topic_filter)
-		return context
-
-	def get_context_data(self, **kwargs):
-	 	podcasts = super(PodcastListView, self).get_context_data(**kwargs)
-	 	podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
-	 	podcasts['topics'] = Topics.objects.all()
-	 	return podcasts
-
+# View an individual podcast - comments, voting, playback of audio, subscriptions
 class PodcastView(TemplateView):
-	template_name = 'view_podcast.html'
+  template_name = 'view_podcast.html'
 
-	def get_success_url(self):
-		return self.success_url
+  def get_success_url(self):
+    return self.success_url
 
-	def get_context_data(self, **kwargs):
-		podcast = Podcasts.objects.get(slugfield=kwargs['slugfield'])
-		podcast.views += 1
-		podcast.save()
+  def get_context_data(self, **kwargs):
+    podcast = Podcast.objects.get(slugfield=kwargs['slugfield'])
+    podcast.views += 1
+    podcast.save()
+    comments = Comment.objects.filter(podcast_id=podcast.id).order_by('-created')
+    context = {}
+    context['podcast'] = podcast
+    context['comments'] = comments
+    return context
 
-		comments = Comments.objects.filter(podcast_id=podcast.id).order_by('-created')
-		self.podcast_id = podcast.id
-		podcast.tags = ', '.join(podcast.tags)
+  def post(self, request, *args, **kwargs):
+    if request.method == 'POST':
+      form = CommentForm(request.POST)
+      if form.is_valid():
+        podcast = Podcast.objects.get(slugfield=kwargs['slugfield'])
+        podcast.num_comments += 1
+        podcast.views -= 1 # ignore view count increment on redirect
+        podcast.save()
 
-		context = {}
-		context['podcast'] = podcast
-		context['comments'] = comments
-		return context
+        comment = form.save(commit=False)
+        comment.podcast = podcast
+        comment.author = self.request.user
+        comment.save()
+      return HttpResponseRedirect('/podcast/' + kwargs['slugfield'] + '/')
 
-	def post(self, request, *args, **kwargs):
-		if request.method == 'POST':
-			form = CommentsForm(request.POST)
-			if form.is_valid():
-				podcast = Podcasts.objects.get(slugfield=kwargs['slugfield'])
-				podcast.num_comments += 1
-				podcast.views -= 1 # ignore view count increment on redirect
-				podcast.save()
+## Dashboard for users/content creators
+# Main page with statistics recent subscriptions
+class Dashboard(LoginRequiredMixin, TemplateView):
+  template_name = 'dashboard.html'
 
-				comment = form.save(commit=False)
-				comment.podcast = podcast
-				comment.author = self.request.user
-				comment.save()
-			return HttpResponseRedirect('/podcast/' + kwargs['slugfield'] + '/')
+# View a list of subscriptions and updates
+class Subscriptions(LoginRequiredMixin, TemplateView):
+  template_name = 'subscriptions.html'
 
-class PodcastsCreate(LoginRequiredMixin, CreateView):
-	template_name = 'podcast_form.html'
-	model = Podcasts
-	fields = ['title', 'description', 'audio_file', 'file_type']
+# Statistics about uploaded podcasts
+class Statistics(LoginRequiredMixin, TemplateView):
+  template_name = 'statistics.html'
 
-	def get_success_url(self):
-		return self.success_url
+# Set the user profile and other user settings
+class UserSettings(LoginRequiredMixin, UpdateView):
+  template_name = 'settings.html'
+  model = User
+  fields = ['first_name', 'last_name', 'email']
+  success_url = '/dashboard/settings/'
 
-	def get_context_data(self, **kwargs):
-		context = super(PodcastsCreate, self).get_context_data(**kwargs)
-		context['action'] = 'Create'
-		context['topics'] = Topics.objects.all()
-		return context
+  def get_object(self, queryset=None):
+    return self.request.user
 
-	def form_valid(self, form):
-		form.instance.author = self.request.user
-		slugfield = ''.join(w for w in form.instance.title.lower().replace(' ','_') if (w.isalnum() or w=='_'))
-		form.instance.slugfield = slugfield
-		self.success_url = '/podcast/' + slugfield
-		return super(PodcastsCreate, self).form_valid(form)
+  def get_context_data(self, **kwargs):
+    context = super(UserSettings, self).get_context_data(**kwargs)
+    return context
 
-class PodcastsUpdate(UpdateView):
-	template_name = 'podcast_form.html'
-	model = Podcasts
-	action = 'Edit'
-	fields = ['title', 'description', 'audio_file', 'file_type']
-	slug_field = 'slugfield'
-	slug_url_kwarg = 'slugfield'
+# Manage podcasts uploaded onto the site - delete/option to edit
+class PodcastManage(LoginRequiredMixin, ListView):
+  template_name = 'manage_podcasts.html'
+  model = Podcast
+  context_object_name = 'podcasts'
 
-	def get_success_url(self):
-		return self.success_url
+  def get_queryset(self):
+    context = Podcast.objects.filter(author__id=self.request.user.id)
+    return context
 
-	def get_context_data(self, **kwargs):
-		context = super(PodcastsUpdate, self).get_context_data(**kwargs)
-		context['action'] = 'Edit'
-		context['topics'] = Topics.objects.all()
-		print(context['topics'])
-		return context
+# Upload a new podcast onto the site
+class PodcastUpload(LoginRequiredMixin, CreateView):
+  template_name = 'podcast_form.html'
+  model = Podcast
+  fields = ['title', 'description', 'audio_file', 'file_type']
 
-	def form_valid(self, form):
-		slugfield = ''.join(w for w in form.instance.title.lower().replace(' ','_') if (w.isalnum() or w=='_'))
-		form.instance.updated = timezone.now()
-		form.instance.slugfield = slugfield
-		form.instance.views -= 1 # ignore view count increment on redirect
-		self.success_url = '/podcast/' + slugfield
-		return super(PodcastsUpdate, self).form_valid(form)
+  def get_success_url(self):
+    return self.success_url
+
+  def get_context_data(self, **kwargs):
+    context = super(PodcastUpload, self).get_context_data(**kwargs)
+    context['title'] = 'Upload a Podcast'
+    context['topics'] = Topic.objects.all()
+    return context
+
+  def form_valid(self, form):
+    topic_id = self.request.POST['topics']
+    form.instance.topic = Topic.objects.get(id=topic_id)
+    form.instance.author = self.request.user
+    slugfield = ''.join(w for w in form.instance.title.lower().replace(' ','_') if (w.isalnum() or w=='_'))
+    form.instance.slugfield = slugfield
+    self.success_url = '/podcast/' + slugfield
+    
+    return super(PodcastUpload, self).form_valid(form)
+
+  def form_invalid(self, form):
+    print(form.errors)
+    return HttpResponse("invalid")
+
+# Update an uploaded podcast - only the original creator can update
+class PodcastUpdate(LoginRequiredMixin, UpdateView):
+  template_name = 'podcast_form.html'
+  model = Podcast
+  fields = ['title', 'description', 'audio_file', 'file_type']
+  slug_field = 'slugfield'
+  slug_url_kwarg = 'slugfield'
+
+  def get_success_url(self):
+    return self.success_url
+
+  def get_context_data(self, **kwargs):
+    context = super(PodcastUpdate, self).get_context_data(**kwargs)
+    context['title'] = 'Edit Podcast'
+    context['topics'] = Topic.objects.all()
+    print(context['topics'])
+    return context
+
+  def form_valid(self, form):
+    slugfield = ''.join(w for w in form.instance.title.lower().replace(' ','_') if (w.isalnum() or w=='_'))
+    form.instance.updated = timezone.now()
+    form.instance.slugfield = slugfield
+    form.instance.views -= 1 # ignore view count increment on redirect
+    self.success_url = '/podcast/' + slugfield
+    return super(PodcastUpdate, self).form_valid(form)

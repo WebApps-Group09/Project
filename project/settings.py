@@ -37,7 +37,13 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates/'),
+            os.path.join(BASE_DIR, 'templates/admin/'),
+            os.path.join(BASE_DIR, 'templates/dashboard/'),
+            os.path.join(BASE_DIR, 'templates/layouts/'),
+            os.path.join(BASE_DIR, 'templates/registration/'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,8 +94,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+MEDIA_URL = '/media/'
+
 STATIC_URL = '/static/'
 
-LOGIN_URL = '/login/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static/"),
+]
 
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'

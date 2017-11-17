@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Content Management{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block sidebar %}
+<ul class="navbar-nav navbar-sidenav">
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+    <a class="nav-link" href="{% url 'dashboard' %}">
+      <i class="fa fa-fw fa-dashboard"></i>
+      <span class="nav-link-text">Dashboard</span>
+    </a>
+  </li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Subscriptions">
+    <a class="nav-link" href="{% url 'subs' %}">
+      <i class="fa fa-fw fa-bell"></i>
+      <span class="nav-link-text">Subscriptions</span>
+    </a>
+  </li>
+  <li class="nav-divider"></li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Statistics">
+    <a class="nav-link" href="{% url 'stats' %}">
+      <i class="fa fa-fw fa-line-chart"></i>
+      <span class="nav-link-text">Statistics</span>
+    </a>
+  </li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Upload">
+    <a class="nav-link" href="{% url 'upload_podcast' %}">
+      <i class="fa fa-fw fa-upload"></i>
+      <span class="nav-link-text">Upload a Podcast</span>
+    </a>
+  </li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage">
+    <a class="nav-link" href="{% url 'manage_podcasts' %}">
+      <i class="fa fa-fw fa-user"></i>
+      <span class="nav-link-text">Manage Podcasts</span>
+    </a>
+  </li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
+    <a class="nav-link" href="{% url 'settings' %}">
+      <i class="fa fa-fw fa-cog"></i>
+      <span class="nav-link-text">Settings</span>
+    </a>
+  </li>
+  <li class="nav-divider"></li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Logout">
+    <a class="nav-link" href="{% url 'logout' %}">
+      <i class="fa fa-fw fa-sign-out"></i>
+      <span class="nav-link-text">Logout</span>
+    </a>
+  </li>
+</ul>
+<ul class="navbar-nav sidenav-toggler">
+  <li class="nav-item">
+    <a class="nav-link text-center" id="sidenavToggler">
+      <i class="fa fa-fw fa-angle-left"></i>
+    </a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block body %}
+  <div class="content-wrapper">
+    <div class="container-fluid content">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

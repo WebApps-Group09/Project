@@ -1,0 +1,83 @@
+{% extends "content_management.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% load staticfiles %}
+{% block css %}
+ <link rel="stylesheet" href="{% static 'css/podlife/fileinput.css' %}">
+{% endblock %}
+{% block content %}
+
+
+
+<div class="container-fluid">
+  <h2>{{ title }}</h2>
+  <hr>
+  <form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="control-label" for="id_title">{{ form.title.label }}</label>
+          <input type="text" name="title" {% if form.title.value %}value="{{ form.title.value }}"{% endif %} class="form-control" id="id_title" required maxlength="200" />
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="id_description">{{ form.description.label }}</label>
+          <textarea name="description" cols="40" class="form-control" id="id_description" rows="7" >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="control-label" for="id_topics">Pod</label>
+          <select name="topics" class="form-control" id="id_topics" aria-describedby="topicsHelp">
+            {% for topic in topics %}
+              <option value="{{ topic.id }}">{{ topic.topic }}</option>
+            {% endfor %}
+          </select>
+          <small id="topicsHelp" class="form-text text-muted">Select the associated topic to your podcast.</small>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="id_audio_file">{{ form.audio_file.label }}</label>
+          <input type="file" name="audio_file" id="id_audio_file" required />          
+          <small id="fileHelp" class="form-text text-muted">Supported files: .wav, .mp3</small>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="id_file_type">{{ form.file_type.label }}</label>
+          <select name="file_type" aria-describedby="fileTypeHelp" class="form-control" id="id_file_type">
+            {% for file_type in form.file_type %}
+              {{ file_type }}
+            {% endfor %}
+          </select>
+          <small id="fileTypeHelp" class="form-text text-muted">Select your file type.</small>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <h4 style="padding-left: 15px;">Add Pictures</h4>
+    <div class="row">
+      <div id="addpicture">
+        <i class="fa fa-fw fa-plus"></i>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <input class="btn btn-default" type="submit" value="Submit" />
+          <input type="hidden" name="Next" value="{{ next }}" />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+<script>
+  //$( document ).ready(function() { // may be needed for the bootstrap file input
+    /*$("#test").change(function () {
+      console.log("Hello");
+      var fieldVal = $(this).val();
+      if (fieldVal != undefined || fieldVal != "") {
+        $(this).next(".custom-file-control").attr('data-content', fieldVal);
+      }
+    });*/ 
+//});
+</script>

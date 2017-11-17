@@ -1,8 +1,9 @@
 from django.forms import ModelForm
 
-from podlife.models import Comments
+from podlife.models import Comment
 
-class CommentsForm(ModelForm):
-	class Meta:
-		model = Comments
-		fields = ['comment']
+class CommentForm(ModelForm):
+  class Meta:
+    model = Comment
+    fields = ['comment']
+    

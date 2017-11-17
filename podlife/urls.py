@@ -1,21 +1,28 @@
-from django.conf.urls import include, url
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
+from django.conf.urls import include, url
 
 from podlife.views import *
 
 urlpatterns = [
-	url(r'^$', PodcastListView.as_view(), name='home'), 
-        url(r'^home', LandingPage.as_view(), name='landing'),
-	url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
-	url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
-	url(r'^password_change/$', auth_views.PasswordChangeView.as_view(), name='password_change'),
-	url(r'^password_change_done/$', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
-	url(r'^signup/$', Signup.as_view(), name='signup'),
-	url(r'^profile/$', Profile.as_view(), name='profile'),
-	url(r'^create/$', PodcastsCreate.as_view(), name='create'),
-	url(r'^podcast/(?P<slugfield>[\w-]+)/', include([
-        url(r'^$', PodcastView.as_view()),
-        url(r'^edit/$', PodcastsUpdate.as_view()),
+  url(r'^$', HomePage.as_view(), name='home'),
+  url(r'^control/', include([
+    url(r'^topic/', include ([
+      url(r'^$', ManageTopics.as_view(), name='manage_topics'),
+      url(r'^create/$', CreateTopic.as_view(), name='create_topic'),
     ])),
+  ])),
+  url(r'^list/$', PodcastList.as_view(), name='list'),
+  url(r'^random/$', random, name='random'),
+  url(r'^podcast/(?P<slugfield>[\w-]+)/', PodcastView.as_view()),
+  url(r'^dashboard/', include([
+    url(r'^$', Dashboard.as_view(), name='dashboard'),
+    url(r'^subs/$', Subscriptions.as_view(), name="subs"),
+    url(r'^stats/$', Statistics.as_view(), name='stats'),
+    url(r'^manage/', include ([
+      url(r'^$', PodcastManage.as_view(), name='manage_podcasts'),
+      url(r'^(?P<slugfield>[\w-]+)/', PodcastUpdate.as_view()),
+    ])),
+    url(r'^upload/$', PodcastUpload.as_view(), name='upload_podcast'),
+    url(r'^settings/$', UserSettings.as_view(), name='settings')
+  ])),
 ]

@@ -1,6 +1,8 @@
-.DS_Store
+uploads/
 
+.DS_Store
 *.py[co]
 __pycache__
 dist/
 build/
+project/settings.py
