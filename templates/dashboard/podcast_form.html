@@ -1,7 +1,13 @@
 {% extends "content_management.html" %}
 {% block title %}{{ title }}{% endblock %}
-
+{% load staticfiles %}
+{% block css %}
+ <link rel="stylesheet" href="static/css/podlife/fileInput.css">
+{% endblock %}
 {% block content %}
+
+
+
 <div class="container-fluid">
   <h2>{{ title }}</h2>
   <hr>
@@ -29,10 +35,9 @@
           <small id="topicsHelp" class="form-text text-muted">Select the associated topic to your podcast.</small>
         </div>
         <div class="form-group">
-          <label class="control-label" for="id_audio_file">{{ form.audio_file.label }}</label>
-          <label class="custom-file">
-            <input type="file" name="audio_file" class="custom-file-input" aria-describedby="fileHelp" id="id_audio_file" />
-            <span class="custom-file-control"></span>
+          <label class="fileContainer">
+            Audio file
+            <input id="test" type="file"/>
           </label>
           <small id="fileHelp" class="form-text text-muted">Supported files: .wav, .mp3</small>
         </div>
@@ -66,3 +71,15 @@
   </form>
 </div>
 {% endblock %}
+
+<script>
+  //$( document ).ready(function() { // may be needed for the bootstrap file input
+    /*$("#test").change(function () {
+      console.log("Hello");
+      var fieldVal = $(this).val();
+      if (fieldVal != undefined || fieldVal != "") {
+        $(this).next(".custom-file-control").attr('data-content', fieldVal);
+      }
+    });*/ 
+//});
+</script>
