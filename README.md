@@ -32,8 +32,8 @@
 * Dependencies
 	* `pip install pip install Django==1.11.6 psycopg2==2.7.3.2`
 * Database
-	* `create database project;`
-	* `create user project with password 'project';`
-	* `alter database project owner to project;`
+	* `create database podlife;`
+	* `create user group09 with password 'project';`
+	* `alter database podlife owner to project;`
 * Deployment
 	* `python manage.py runserver 0.0.0.0:8080`
