@@ -5,4 +5,4 @@ uploads/
 __pycache__
 dist/
 build/
-project/settings.py
+*.swp
