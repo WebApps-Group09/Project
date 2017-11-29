@@ -34,6 +34,6 @@
 * Database
 	* `create database podlife;`
 	* `create user group09 with password 'project';`
-	* `alter database podlife owner to project;`
+	* `alter database podlife owner to group09;`
 * Deployment
 	* `python manage.py runserver 0.0.0.0:8080`
