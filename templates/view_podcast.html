@@ -10,6 +10,10 @@
       <small class="text-muted">by <span>{{podcast.author.username}}</span></small><br>
       <p>{{podcast.topic.topic}}</p>
       <p>{{podcast.description}}</p>
+      <audio controls>
+        <source src="{{ podcast.audio_file.url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
     </div>
     <div class="col-sm-2">
       {% if podcast.author.username == user.username %}
