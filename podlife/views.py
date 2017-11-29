@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
 
 from podlife.forms import CommentForm
 from podlife.models import Comment, Podcast, Topic
@@ -130,7 +130,7 @@ class UserSettings(LoginRequiredMixin, UpdateView):
 
 
 # Manage podcasts uploaded onto the site - delete/option to edit
-class ManagePodcasts(LoginRequiredMixin, ListView):
+class PodcastManage(LoginRequiredMixin, ListView):
     template_name = 'manage_podcasts.html'
     model = Podcast
     context_object_name = 'podcasts'
@@ -139,6 +139,8 @@ class ManagePodcasts(LoginRequiredMixin, ListView):
         context = Podcast.objects.filter(author__id=self.request.user.id)
         return context
 
+class PodcastDelete(LoginRequiredMixin, DeleteView):
+	model = Podcast
 
 # Upload a new podcast onto the site
 class PodcastUpload(LoginRequiredMixin, CreateView):

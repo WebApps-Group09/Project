@@ -15,7 +15,6 @@ urlpatterns = [
         url(r'^random/$', random, name='random'),
         url(r'^(?P<slugfield>[\w-]+)/$', PodcastView.as_view()),
     ])),
-	url(r'^list/$', PodcastList.as_view(), name='list'),
 	url(r'^random/$', random, name='random'),
 	url(r'^podcast/(?P<slugfield>[\w-]+)/', PodcastView.as_view()),
 	url(r'^dashboard/', include([
