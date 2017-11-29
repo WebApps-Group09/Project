@@ -60,8 +60,8 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'project',
-        'USER': 'project',
+        'NAME': 'podlife',
+        'USER': 'group09',
         'PASSWORD': 'project',
         'HOST': 'localhost',
         'PORT': '5432',

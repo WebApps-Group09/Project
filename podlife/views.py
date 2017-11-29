@@ -130,7 +130,7 @@ class UserSettings(LoginRequiredMixin, UpdateView):
 
 
 # Manage podcasts uploaded onto the site - delete/option to edit
-class PodcastManage(LoginRequiredMixin, ListView):
+class ManagePodcasts(LoginRequiredMixin, ListView):
     template_name = 'manage_podcasts.html'
     model = Podcast
     context_object_name = 'podcasts'
@@ -139,11 +139,13 @@ class PodcastManage(LoginRequiredMixin, ListView):
         context = Podcast.objects.filter(author__id=self.request.user.id)
         return context
 
-class PodcastDelete(LoginRequiredMixin, DeleteView):
-	model = Podcast
+
+class DeletePodcast(LoginRequiredMixin, DeleteView):
+    model = Podcast
+
 
 # Upload a new podcast onto the site
-class PodcastUpload(LoginRequiredMixin, CreateView):
+class UploadPodcast(LoginRequiredMixin, CreateView):
     template_name = 'podcast_form.html'
     model = Podcast
     fields = ['title', 'description', 'audio_file', 'file_type']
@@ -152,7 +154,7 @@ class PodcastUpload(LoginRequiredMixin, CreateView):
         return self.success_url
 
     def get_context_data(self, **kwargs):
-        context = super(PodcastUpload, self).get_context_data(**kwargs)
+        context = super(UploadPodcast, self).get_context_data(**kwargs)
         context['title'] = 'Upload Podcast'
         context['topics'] = Topic.objects.all()
         return context
@@ -164,11 +166,39 @@ class PodcastUpload(LoginRequiredMixin, CreateView):
         slugfield = ''.join(w for w in form.instance.title.lower().replace(' ', '_') if (w.isalnum() or w == '_'))
         form.instance.slugfield = slugfield
         self.success_url = '/podcast/' + slugfield
-        return super(PodcastUpload, self).form_valid(form)
+        return super(UploadPodcast, self).form_valid(form)
 
     def form_invalid(self, form):
         print(form.errors)
         return HttpResponse("invalid")
+
+
+# Update an uploaded podcast - only the original creator can update
+class UpdatePodcast(LoginRequiredMixin, UpdateView):
+    template_name = 'podcast_form.html'
+    model = Podcast
+    fields = ['title', 'description', 'audio_file', 'file_type']
+    slug_field = 'slugfield'
+    slug_url_kwarg = 'slugfield'
+
+    def get_success_url(self):
+        return self.success_url
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdatePodcast, self).get_context_data(**kwargs)
+        context['title'] = 'Edit Podcast'
+        context['topics'] = Topic.objects.all()
+        print(context['topics'])
+        return context
+
+    def form_valid(self, form):
+        slugfield = ''.join(w for w in form.instance.title.lower(
+        ).replace(' ', '_') if (w.isalnum() or w == '_'))
+        form.instance.updated = timezone.now()
+        form.instance.slugfield = slugfield
+        form.instance.views -= 1  # ignore view count increment on redirect
+        self.success_url = '/podcast/' + slugfield
+        return super(UpdatePodcast, self).form_valid(form)
 
 
 # Manage all topics - allows for editing/deletion
@@ -185,31 +215,3 @@ class CreateTopic(CreateView):
     slug_field = 'topic'
     success_url = '/dashboard/manage/topic/'
     fields = ['topic', 'description']
-
-
-# Update an uploaded podcast - only the original creator can update
-class PodcastUpdate(LoginRequiredMixin, UpdateView):
-    template_name = 'podcast_form.html'
-    model = Podcast
-    fields = ['title', 'description', 'audio_file', 'file_type']
-    slug_field = 'slugfield'
-    slug_url_kwarg = 'slugfield'
-
-    def get_success_url(self):
-        return self.success_url
-
-    def get_context_data(self, **kwargs):
-        context = super(PodcastUpdate, self).get_context_data(**kwargs)
-        context['title'] = 'Edit Podcast'
-        context['topics'] = Topic.objects.all()
-        print(context['topics'])
-        return context
-
-    def form_valid(self, form):
-        slugfield = ''.join(w for w in form.instance.title.lower(
-        ).replace(' ', '_') if (w.isalnum() or w == '_'))
-        form.instance.updated = timezone.now()
-        form.instance.slugfield = slugfield
-        form.instance.views -= 1  # ignore view count increment on redirect
-        self.success_url = '/podcast/' + slugfield
-        return super(PodcastUpdate, self).form_valid(form)

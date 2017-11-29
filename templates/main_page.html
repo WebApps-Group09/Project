@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}List of Podcasts{% endblock %}
+{% block title %}Index{% endblock %}
 
 {% block body %}
 <div class="container body">
@@ -58,11 +58,11 @@
 					<div class="row">
 					{% for topic in topics %}
 						{% if forloop.first %}
-						<div class="col-sm-4">
+						<div class="col-sm-6">
 						{% endif %}
-							<button class="btn btn-link" name="topicfilter" value="{{topic.topic}}" type="submit">{{ topic.topic }}</button> {% if forloop.counter|divisibleby:3 %}
+							<a class="btn btn-link" href="/topic/{{topic.topic}}">{{ topic.topic }}</a> {% if forloop.counter|divisibleby:3 %}
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
 						{% endif %}
 						{% if forloop.last %}
 						</div>
