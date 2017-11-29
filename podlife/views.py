@@ -9,23 +9,6 @@ from podlife.models import Comment, Podcast, Topic
 # from podlife.models import CreatorSubscription, TopicSubscription
 
 
-# Admin Pages
-# Manage all topics - allows for editing/deletion
-class ManageTopics(ListView):
-    template_name = 'manage_topics.html'
-    model = Topic
-    context_object_name = 'topics'
-
-
-# Create a new topic
-class CreateTopic(CreateView):
-    template_name = 'create_topic.html'
-    model = Topic
-    slug_field = 'topic'
-    success_url = '/control/topic/'
-    fields = ['topic', 'description']
-
-
 # Main Pages
 # Landing page for initial user interaction with the website
 class HomePage(TemplateView):
@@ -45,28 +28,28 @@ class UserView(TemplateView):
     # TODO: subscribe to a specific user
 
 
-# Main dashboard for viewing podcasts and their associated pods
-class PodcastList(ListView):
-    template_name = 'list_podcasts.html'
+# View list of podcasts from a specific pod
+class TopicView(ListView):
+    template_name = 'view_topic.html'
+    # TODO: display a list of all podcasts in that pod
+
+
+# Main dashboard for trending podcasts and allow filtering by pods
+class MainPage(ListView):
+    template_name = 'main_page.html'
     model = Podcast
     context_object_name = 'podcasts'
 
     def get_queryset(self):
         title_filter = self.request.GET.get('titlefilter', '')
-        topic_filter = self.request.GET.get('topicfilter', '')
-        if not title_filter and not topic_filter:
-            context = Podcast.objects.order_by('-created')
-        elif title_filter and topic_filter:
+        if title_filter:
             context = Podcast.objects.filter(title__icontains=title_filter)
-            context = Podcast.objects.filter(topic__icontains=topic_filter)
-        elif title_filter and not topic_filter:
-            context = Podcast.objects.filter(title__icontains=title_filter)
-        elif topic_filter and not title_filter:
-            context = Podcast.objects.filter(topic__icontains=topic_filter)
+        else:
+            context = Podcast.objects.all()
         return context
 
     def get_context_data(self, **kwargs):
-        podcasts = super(PodcastList, self).get_context_data(**kwargs)
+        podcasts = super(MainPage, self).get_context_data(**kwargs)
         podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
         podcasts['topics'] = Topic.objects.all()
         return podcasts
@@ -147,7 +130,7 @@ class UserSettings(LoginRequiredMixin, UpdateView):
 
 
 # Manage podcasts uploaded onto the site - delete/option to edit
-class PodcastManage(LoginRequiredMixin, ListView):
+class ManagePodcasts(LoginRequiredMixin, ListView):
     template_name = 'manage_podcasts.html'
     model = Podcast
     context_object_name = 'podcasts'
@@ -184,6 +167,22 @@ class PodcastUpload(LoginRequiredMixin, CreateView):
     def form_invalid(self, form):
         print(form.errors)
         return HttpResponse("invalid")
+
+
+# Manage all topics - allows for editing/deletion
+class ManageTopics(ListView):
+    template_name = 'manage_topics.html'
+    model = Topic
+    context_object_name = 'topics'
+
+
+# Create a new topic
+class CreateTopic(CreateView):
+    template_name = 'create_topic.html'
+    model = Topic
+    slug_field = 'topic'
+    success_url = '/dashboard/manage/topic/'
+    fields = ['topic', 'description']
 
 
 # Update an uploaded podcast - only the original creator can update

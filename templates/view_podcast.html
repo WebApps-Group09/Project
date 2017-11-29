@@ -18,7 +18,7 @@
     <div class="col-sm-2">
       {% if podcast.author.username == user.username %}
       <p>
-        <input class="btn btn-default" type="submit" value="Edit Podcast"/>
+        <input class="btn btn-secondary" type="submit" value="Edit Podcast"/>
       </p>
       {% endif %}
       <small>
@@ -38,7 +38,7 @@
       <div class="form-group">
         <textarea name="comment" placeholder="Write a comment" cols="40" class="form-control" required rows="5"></textarea>
       </div>
-      <input class="btn btn-default" type="submit" value="Post">
+      <input class="btn btn-secondary" type="submit" value="Post">
     </form>
     <br>
   {% else %}
