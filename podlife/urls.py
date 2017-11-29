@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^manage/', include ([
       url(r'^$', PodcastManage.as_view(), name='manage_podcasts'),
       url(r'^(?P<slugfield>[\w-]+)/', PodcastUpdate.as_view()),
+	  url(r'^(?P<slugfield>[\w-]+)/', PodcastDelete.as_view()),
     ])),
     url(r'^upload/$', PodcastUpload.as_view(), name='upload_podcast'),
     url(r'^settings/$', UserSettings.as_view(), name='settings')

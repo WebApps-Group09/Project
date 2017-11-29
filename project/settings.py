@@ -10,6 +10,7 @@ ALLOWED_HOSTS = [
     'localhost',
     'group09.dhcp.nd.edu',
     '10.173.153.179',
+    '127.0.0.1',
 ]
 
 INSTALLED_APPS = [
@@ -61,8 +62,8 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'podlife',
-        'USER': 'group09',
+        'NAME': 'project',
+        'USER': 'project',
         'PASSWORD': 'project',
         'HOST': 'localhost',
         'PORT': '5432',
