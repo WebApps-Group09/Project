@@ -1,9 +1,7 @@
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 SECRET_KEY = 'qj4)*lo7bhn_#f9apix!f!s@-pad#xg(8n*782u%1z=qjic+ht'
-
 DEBUG = True
 
 ALLOWED_HOSTS = [
@@ -85,21 +83,15 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'EST'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 MEDIA_ROOT=os.path.join(BASE_DIR,"uploads")
 
 MEDIA_URL = '/media/'
-
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/"),
 ]
