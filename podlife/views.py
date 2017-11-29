@@ -147,7 +147,7 @@ class PodcastManage(LoginRequiredMixin, ListView):
 class PodcastUpload(LoginRequiredMixin, CreateView):
     template_name = 'podcast_form.html'
     model = Podcast
-    fields = ['title', 'description', 'audio_file']
+    fields = ['title', 'description', 'audio_file', 'file_type']
 
     def get_success_url(self):
         return self.success_url

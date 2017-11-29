@@ -48,7 +48,7 @@ class Podcast(models.Model):
     title = models.CharField(max_length=200, blank=False)
     description = models.TextField(blank=True)
     audio_file = models.FileField(upload_to='', null=True)
-    # file_type = models.CharField(max_length=3, choices=(('WAV', '.wav'), ('MP3', '.mp3')), default='WAV')
+    file_type = models.CharField(max_length=3, choices=(('WAV', '.wav'), ('MP3', '.mp3')), default='WAV')
     file_path = models.CharField(max_length=220, null=True, editable=False)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, editable=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
