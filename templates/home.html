@@ -4,28 +4,76 @@
 {% load staticfiles %}
 
 {% block css %}
-  <link rel="stylesheet" href="{% static 'css/podlife/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/podlife/home.css' %}">
 {% endblock %}
 
 {% block body %}
 <div class="container-fluid">
-  <div class="row" id="background">
-    <div class="col-md-12" id="welcome">
-      <h1>Welcome to <strong>PodLife</strong></h1>
-      <h3>A new kind of podcast community.</h3>
-      <br>
-      <a href="#about" class="btn btn-primary">Learn More</a>
-      {% if user.is_authenticated %}
-        <a href="{% url 'list' %}" class="btn btn-secondary" id="rightbtn">Podcasts</a>
-      {% else %}
-        <a href="{% url 'signup' %}" class="btn btn-secondary" id="rightbtn">Sign Up</a>
-      {% endif %}
-    </div>
-  </div>
-  <div class="row" id="about">
-    <div class="col-md-12">
-      <h1>About <strong>PodLife</strong></h1>
-    </div>
-  </div>
+	<div class="row" id="background">
+		<div class="col-md-12" id="welcome">
+			<h1>Welcome to <strong>PodLife</strong></h1>
+			<h3>A new kind of podcast community.</h3>
+			<br>
+			<a href="#about" class="btn btn-primary">Learn More</a> {% if user.is_authenticated %}
+			<a href="{% url 'main' %}" class="btn btn-secondary" id="rightbtn">Podcasts</a> {% else %}
+			<a href="{% url 'signup' %}" class="btn btn-secondary" id="rightbtn">Sign Up</a> {% endif %}
+		</div>
+	</div>
+	<br>
+	<div class="row" id="about">
+		<div class="col-md-12">
+			<div class="container" style="margin-left: 2.5%; margin-right: 2.5%; min-width: 95%;">
+				<div class="about-header" style="color: #727b84; font-size: 42px;">
+					About <strong>PodLife</strong>
+				</div>
+				<hr style="background-color: #727b84 !important;color: #727b84 !important;height: 2px !important;">
+				<div id="about-text" style="font-size: 26px; margin: 40px;">
+					We're PodLife. We created this site so that users would be able to have a much more intuitive and friendly experience with creators. Our goal is to provide you with a way to connect individually with creators and be able to find podcasts which better
+					suit your tastes. Other podcast applications allow for you to follow all sorts of series while ours focuses more on individual creations which allows for greater diversity among our service.
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" id="about">
+		<div class="col-md-12">
+			<div class="container" style="margin-left: 2.5%; margin-right: 2.5%; min-width: 95%;">
+				<div class="about-header" style="color: #727b84; font-size: 42px;">
+					Meet Our Pod
+				</div>
+				<hr style="background-color: #727b84 !important;color: #727b84 !important;height: 2px !important;">
+			</div>
+			<br><br>
+			<div class="row" id="team">
+				<div class="col-md-3" style="min-height: 100px; text-align: center;">
+					<img src="../static/img/luke.jpg" style="border-radius: 50%; max-height: 250px;">
+					<div style="color: #727b84; font-size: 36px; margin: 10px;">Luke Duane</div>
+					<div style="font-size: 22px; margin-left: 10%; margin-right: 10%;">
+						My name is Luke and I am a cool dude. I love to chill and relax with my homies.
+					</div>
+				</div>
+				<div class="col-md-3" style="min-height: 100px; text-align: center;">
+					<img src="../static/img/michael.jpg" style="border-radius: 50%; max-height: 250px;">
+					<div style="color: #727b84; font-size: 36px; margin: 10px;">Michael Sills</div>
+					<div style="font-size: 22px; margin-left: 10%; margin-right: 10%;">
+						My name is Michael and I am a cool dude too. I also love to chill, relax, and throw the pigskin around.
+					</div>
+				</div>
+				<div class="col-md-3" style="min-height: 100px; text-align: center;">
+					<img src="../static/img/catherine.jpg" style="border-radius: 50%; max-height: 250px;">
+					<div style="color: #727b84; font-size: 36px; margin: 10px;">Catherine Badart</div>
+					<div style="font-size: 22px; margin-left: 10%; margin-right: 10%;">
+						Hey its Cat. I love peppermint mochas. Something unique about me is that I also love netflix.
+					</div>
+				</div>
+				<div class="col-md-3" style="min-height: 100px; text-align: center;">
+					<img src="../static/img/ann.jpg" style="border-radius: 50%; max-height: 250px;">
+					<div style="color: #727b84; font-size: 36px; margin: 10px;">Ann Keenan</div>
+					<div style="font-size: 22px; margin-left: 10%; margin-right: 10%;">
+						Hi, I'm Ann. My friends all say I'm cool and they're right. I too also love to chill, relax, and watch Netflix
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}

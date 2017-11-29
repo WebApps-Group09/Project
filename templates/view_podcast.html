@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{% endblock %}
+{% block title %}{{ podcast.title }}{% endblock %}
 
 {% block body %}
 <div class="container body">
@@ -10,10 +10,16 @@
       <small class="text-muted">by <span>{{podcast.author.username}}</span></small><br>
       <p>{{podcast.topic.topic}}</p>
       <p>{{podcast.description}}</p>
+      <audio controls>
+        <source src="{{ podcast.audio_file.url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
     </div>
     <div class="col-sm-2">
       {% if podcast.author.username == user.username %}
-      <p><input class="btn btn-default" type="submit" value="Edit Podcast" onclick="location.href='edit/';"/></p>
+      <p>
+        <input class="btn btn-secondary" type="submit" value="Edit Podcast"/>
+      </p>
       {% endif %}
       <small>
         <em class="text-muted">
@@ -32,7 +38,7 @@
       <div class="form-group">
         <textarea name="comment" placeholder="Write a comment" cols="40" class="form-control" required rows="5"></textarea>
       </div>
-      <input class="btn btn-default" type="submit" value="Post">
+      <input class="btn btn-secondary" type="submit" value="Post">
     </form>
     <br>
   {% else %}
