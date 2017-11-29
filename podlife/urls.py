@@ -9,6 +9,10 @@ urlpatterns = [
             url(r'^create/$', CreateTopic.as_view(), name='create_topic'),
         ])),
     ])),
+    url(r'user/', include([
+        url(r'^$', ListUsers.as_view(), name='list_users'),
+        url(r'^(?P<username>[\w-]+)/', UserView.as_view()),
+    ])),
     url(r'^list/$', PodcastList.as_view(), name='list'),
     url(r'^random/$', random, name='random'),
     url(r'^podcast/(?P<slugfield>[\w-]+)/', PodcastView.as_view()),

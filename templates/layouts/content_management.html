@@ -26,18 +26,32 @@
       <span class="nav-link-text">Statistics</span>
     </a>
 	</li>
-	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Upload">
-		<a class="nav-link" href="{% url 'upload_podcast' %}">
-      <i class="fa fa-fw fa-upload"></i>
-      <span class="nav-link-text">Upload a Podcast</span>
-    </a>
-	</li>
 	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage">
 		<a class="nav-link" href="{% url 'manage_podcasts' %}">
-      <i class="fa fa-fw fa-user"></i>
+      <i class="fa fa-fw fa-folder-open"></i>
       <span class="nav-link-text">Manage Podcasts</span>
     </a>
 	</li>
+	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Upload Podcast">
+		<a class="nav-link" href="{% url 'upload_podcast' %}">
+      <i class="fa fa-fw fa-upload"></i>
+      <span class="nav-link-text">Upload Podcast</span>
+    </a>
+	</li>
+	{% if user.is_superuser %}
+	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Pod">
+		<a class="nav-link" href="{% url 'create_topic' %}">
+			<i class="fa fa-fw fa-plus"></i>
+			<span class="nav-link-text">Create Pod</span>
+		</a>
+	</li>
+	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Statistics">
+		<a class="nav-link" href="{% url 'manage_topics' %}">
+			<i class="fa fa-fw fa-folder-open"></i>
+			<span class="nav-link-text">Manage Pods</span>
+		</a>
+	</li>
+	{% endif %}
 	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
 		<a class="nav-link" href="{% url 'settings' %}">
       <i class="fa fa-fw fa-cog"></i>

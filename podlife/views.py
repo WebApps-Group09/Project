@@ -6,6 +6,7 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 
 from podlife.forms import CommentForm
 from podlife.models import Comment, Podcast, Topic
+# from podlife.models import CreatorSubscription, TopicSubscription
 
 
 # Admin Pages
@@ -29,6 +30,19 @@ class CreateTopic(CreateView):
 # Landing page for initial user interaction with the website
 class HomePage(TemplateView):
     template_name = 'home.html'
+
+
+# List all users
+class ListUsers(TemplateView):
+    template_name = 'list_users.html'
+    # TODO: link to specific user pages
+
+
+# View a specific user's uploaded podcasts
+class UserView(TemplateView):
+    template_name = 'view_user.html'
+    # TODO: display a list of all podcasts by that user
+    # TODO: subscribe to a specific user
 
 
 # Main dashboard for viewing podcasts and their associated pods
@@ -154,7 +168,7 @@ class PodcastUpload(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(PodcastUpload, self).get_context_data(**kwargs)
-        context['title'] = 'Upload a Podcast'
+        context['title'] = 'Upload Podcast'
         context['topics'] = Topic.objects.all()
         return context
 

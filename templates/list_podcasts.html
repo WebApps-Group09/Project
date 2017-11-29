@@ -11,10 +11,9 @@
 			{% if podcasts %}
 				{% for podcast in podcasts %}
 				<div class="card mb-4">
-					<img class="card-img-top" src="#" alt="image for {{ podcast.title }}">
 					<div class="card-body">
 						<h2 class="card-title">{{ podcast.title }}</h2>
-						<p class="card-text">{{ podcast.content | slice:":125" }}...</p>
+						<p class="card-text">{% if podcast.content %}{{ podcast.content | slice:":125" }}...{% endif %}</p>
 						<a href="/podcast/{{podcast.slugfield}}/" class="btn btn-primary">Listen Now</a>
 					</div>
 					<div class="card-footer text-muted">
