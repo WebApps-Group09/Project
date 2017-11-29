@@ -14,6 +14,4 @@ urlpatterns = [
     url(r'^signup/$', Signup.as_view(), name='signup'),
     url(r'^', include('podlife.urls')),
 ]
-
-
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

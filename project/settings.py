@@ -59,8 +59,8 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'project',
-        'USER': 'project',
+        'NAME': 'podlife',
+        'USER': 'group09',
         'PASSWORD': 'project',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -88,8 +88,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-MEDIA_ROOT=os.path.join(BASE_DIR,"uploads")
-
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

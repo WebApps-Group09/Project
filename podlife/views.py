@@ -15,9 +15,8 @@ class ManageTopics(ListView):
     model = Topic
     context_object_name = 'topics'
 
+
 # Create a new topic
-
-
 class CreateTopic(CreateView):
     template_name = 'create_topic.html'
     model = Topic
@@ -25,16 +24,14 @@ class CreateTopic(CreateView):
     success_url = '/control/topic/'
     fields = ['topic', 'description']
 
+
 # Main Pages
 # Landing page for initial user interaction with the website
-
-
 class HomePage(TemplateView):
     template_name = 'home.html'
 
+
 # Main dashboard for viewing podcasts and their associated pods
-
-
 class PodcastList(ListView):
     template_name = 'list_podcasts.html'
     model = Podcast
@@ -60,9 +57,8 @@ class PodcastList(ListView):
         podcasts['topics'] = Topic.objects.all()
         return podcasts
 
+
 # Function called on /random/ to redirect to a random podcast
-
-
 def random(request):
     podcast = Podcast.objects.random()
     if podcast:
@@ -70,9 +66,8 @@ def random(request):
     else:
         return HttpResponseRedirect('/list/')
 
+
 # View an individual podcast - comments, voting, playback of audio, subscriptions
-
-
 class PodcastView(TemplateView):
     template_name = 'view_podcast.html'
 
@@ -105,28 +100,24 @@ class PodcastView(TemplateView):
                 comment.save()
             return HttpResponseRedirect('/podcast/' + kwargs['slugfield'] + '/')
 
+
 # Dashboard for users/content creators
 # Main page with statistics recent subscriptions
-
-
 class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
 
+
 # View a list of subscriptions and updates
-
-
 class Subscriptions(LoginRequiredMixin, TemplateView):
     template_name = 'subscriptions.html'
 
+
 # Statistics about uploaded podcasts
-
-
 class Statistics(LoginRequiredMixin, TemplateView):
     template_name = 'statistics.html'
 
+
 # Set the user profile and other user settings
-
-
 class UserSettings(LoginRequiredMixin, UpdateView):
     template_name = 'settings.html'
     model = User
@@ -140,9 +131,8 @@ class UserSettings(LoginRequiredMixin, UpdateView):
         context = super(UserSettings, self).get_context_data(**kwargs)
         return context
 
+
 # Manage podcasts uploaded onto the site - delete/option to edit
-
-
 class PodcastManage(LoginRequiredMixin, ListView):
     template_name = 'manage_podcasts.html'
     model = Podcast
@@ -152,13 +142,12 @@ class PodcastManage(LoginRequiredMixin, ListView):
         context = Podcast.objects.filter(author__id=self.request.user.id)
         return context
 
+
 # Upload a new podcast onto the site
-
-
 class PodcastUpload(LoginRequiredMixin, CreateView):
     template_name = 'podcast_form.html'
     model = Podcast
-    fields = ['title', 'description', 'audio_file', 'file_type']
+    fields = ['title', 'description', 'audio_file']
 
     def get_success_url(self):
         return self.success_url
@@ -173,20 +162,17 @@ class PodcastUpload(LoginRequiredMixin, CreateView):
         topic_id = self.request.POST['topics']
         form.instance.topic = Topic.objects.get(id=topic_id)
         form.instance.author = self.request.user
-        slugfield = ''.join(w for w in form.instance.title.lower(
-        ).replace(' ', '_') if (w.isalnum() or w == '_'))
+        slugfield = ''.join(w for w in form.instance.title.lower().replace(' ', '_') if (w.isalnum() or w == '_'))
         form.instance.slugfield = slugfield
         self.success_url = '/podcast/' + slugfield
-
         return super(PodcastUpload, self).form_valid(form)
 
     def form_invalid(self, form):
         print(form.errors)
         return HttpResponse("invalid")
 
+
 # Update an uploaded podcast - only the original creator can update
-
-
 class PodcastUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'podcast_form.html'
     model = Podcast
