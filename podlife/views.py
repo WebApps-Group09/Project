@@ -22,10 +22,29 @@ class ListUsers(TemplateView):
 
 
 # View a specific user's uploaded podcasts
-class UserView(TemplateView):
-    template_name = 'view_user.html'
-    # TODO: display a list of all podcasts by that user
-    # TODO: subscribe to a specific user
+class UserView(ListView):
+  template_name = 'view_user.html'
+  context_object_name = 'podcasts'
+
+  def get_success_url(self):
+    return self.success_url
+
+  def get_queryset(self):
+    user = self.kwargs['username']
+    model = User
+    print(user)
+    user_id = User.objects.get(username=user).id
+    print(user_id)
+    model = Podcast
+    context = Podcast.objects.filter(author__id=user_id)
+    return context
+
+  def get_context_data(self, **kwargs):
+    podcasts = super(UserView, self).get_context_data(**kwargs)
+    podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
+    podcasts['topics'] = Topic.objects.all()
+
+    return podcasts 
 
 
 # View list of podcasts from a specific pod
