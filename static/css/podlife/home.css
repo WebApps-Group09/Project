@@ -7,25 +7,6 @@ body {
     }
 }
 
-.navbar {
-  padding: .2rem 1rem;
-}
-
-.a {
-	color: #727b84;
-	text-decoration: none;
-}
-
-.a:hover {
-	color: #727b84;
-	text-decoration: none;
-}
-
-#logo {
-	position: relative;
-	right: 145px;
-}
-
 .container-fluid {
 	padding: 0;
   margin: 0;
@@ -42,11 +23,6 @@ body {
 	margin-top: 100px;
 	text-align: center;
 	color: white;
-}
-
-#logo {
-	height: 50px;
-	padding-right: 10px;
 }
 
 #rightbtn {

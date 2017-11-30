@@ -1,6 +1,17 @@
 body {
   font-family: 'Lato', sans-serif;
 }
+
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+
 .body {
   margin-top: 40px;
 }
@@ -16,6 +27,30 @@ body {
 .dropdown-menu {
   left: auto;
   right: 0;
+}
+
+a {
+	color: #727b84;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #727b84;
+	text-decoration: none;
+}
+
+.btn-link {
+	color: #727b84;
+	text-decoration: none;
+}
+
+.btn-link:hover {
+	color: #727b84;
+	text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
 }
 
 .clearfix:after {

@@ -1,8 +1,9 @@
 uploads/
-
-.DS_Store
-*.py[co]
-__pycache__
 dist/
 build/
+
+*.DS_Store
+*.py[co]
 *.swp
+
+__pycache__

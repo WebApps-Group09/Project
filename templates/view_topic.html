@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ topic.topic }}{% endblock %}
+
+{% block body %}
+<div class="container body">
+	<h2>{{ topic.topic }}</h2>
+	<hr>
+	<div class="row">
+		<!-- Podcast List Column -->
+		<div class="col-md-8">
+			{% if podcasts %}
+				{% for podcast in podcasts %}
+				<div class="card mb-4">
+					<div class="card-header text-muted">
+						Posted on {{ podcast.created.date }} by
+						<a href="#">{{ podcast.author }}</a>
+					</div>
+					<div class="card-body">
+						<h2 class="card-title">{{ podcast.title }}</h2>
+						<p class="card-text">{% if podcast.description %}{{ podcast.description | slice:":125" }}...{% endif %}</p>
+						<a href="/podcast/{{podcast.slugfield}}/" class="btn btn-secondary">Listen Now</a>
+					</div>
+					<div class="card-footer text-muted">
+						{{ podcast.views }} views |
+						{{ podcast.num_upvotes }} upvotes |
+						{{ podcast.num_comments }} comments |
+						{{ podcast.num_favorites }} favorites
+					</div>
+				</div>
+				{% endfor %}
+			{% else %}
+			<p>No podcasts</p>
+			{% endif %}
+		</div>
+		<!-- Sidebar widgets -->
+		<div class="col-md-4">
+      <!-- Info widget -->
+			<div class="card mb-4">
+				<h5 class="card-header">Description</h5>
+				<div class="card-body">
+          <p class="card-text">{{ topic.description }}</p>
+          <p class="card-text">
+            {{ topic.num_subscribers }} subscribers |
+            {{ topic.num_podcasts }} podcasts
+          </p>
+				</div>
+			</div>
+			<!-- Categories widget -->
+			<div class="card mb-4">
+				<h5 class="card-header">Pods</h5>
+				<div class="card-body">
+					<div class="row">
+					{% for topic in topics %}
+						<div class="col-sm-6">
+							<a class="btn btn-link" href="/topic/{{topic.topic}}">{{ topic.topic }}</a>
+						</div>
+						{% if forloop.last %}
+					</div>
+						{% elif forloop.counter|divisibleby:2 %}
+					</div>
+					<div class="row">
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

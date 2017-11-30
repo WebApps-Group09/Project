@@ -3,7 +3,24 @@
 
 {% block content %}
 <div class="container-fluid">
-  <h2>Manage Podcasts</h2>
-  <hr>
+	<h2>Manage Podcasts</h2>
+	<hr>
+	<!-- list all podcasts that a user has uploaded -->
+	{% if podcasts %}
+		{% for podcast in podcasts %}
+			<div class="row">
+				<div class="col-md-4">
+					<p>{{ podcast.title }}<p>
+				</div>
+				<div class="col-md-8">
+					<a href="" class="btn btn-danger" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+					<a href="/dashboard/manage/podcast/{{ podcast.slugfield }}" class="btn btn-primary" role="button"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		{% endfor %}
+	{% else %}
+		<p>You haven't uploaded any podcasts<p>
+		<a href="{% url 'upload_podcast' %}" class="btn btn-primary" role="button">Upload a Podcast</a>
+	{% endif %}
 </div>
 {% endblock %}
