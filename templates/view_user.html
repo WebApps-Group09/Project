@@ -27,7 +27,8 @@
           </div>
           <div class="card-footer text-muted">
             Posted on {{ podcast.created.date }} by
-            <a href="#">{{ podcast.author }}</a>
+            <a href="/user/{{ podcast.author }}">{{ podcast.author }}</a> in 
+            <a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
           </div>
         </div>
         {% endfor %}

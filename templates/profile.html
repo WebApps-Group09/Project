@@ -1,9 +1,12 @@
 {% extends "base.html" %}
-{% block title %}List of Podcasts{% endblock %}
+{% block title %}Profile Page{% endblock %}
 
 {% block body %}
 <div class="container body">
-  <h2> Username goes here </h2>
+  <h2> {% if podcasts %}
+        {{ podcasts.first.author }}
+       {% endif %}
+  </h2>
   <hr>
   <div class="row">
     <!-- Podcast List Column -->
@@ -14,12 +17,18 @@
           <img class="card-img-top" src="#" alt="image for {{ podcast.title }}">
           <div class="card-body">
             <h2 class="card-title">{{ podcast.title }}</h2>
-            <p class="card-text">{{ podcast.content | slice:":125" }}...</p>
+            <p class="card-text">{% if podcast.description %}
+                {{ podcast.description | slice:":125" }}
+                {% if podcast.description|length > 125 %}
+                  ...
+                {% endif %}
+              {% endif %}</p>
             <a href="/podcast/{{podcast.slugfield}}/" class="btn btn-primary">Listen Now</a>
           </div>
           <div class="card-footer text-muted">
             Posted on {{ podcast.created.date }} by
-            <a href="#">{{ podcast.author }}</a>
+            <a href="/user/{{ podcast.author }}">{{ podcast.author }}</a>
+            <a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
           </div>
         </div>
         {% endfor %}

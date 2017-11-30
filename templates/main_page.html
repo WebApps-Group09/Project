@@ -13,8 +13,8 @@
 				<div class="card mb-4">
 					<div class="card-header text-muted">
 						Posted on {{ podcast.created.date }} by
-						<a href="#">{{ podcast.author }}</a> in
-						<a href="#">{{ podcast.topic.topic }}</a>
+						<a href="/user/{{ podcast.author }}">{{ podcast.author }}</a> in
+						<a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
 					</div>
 					<div class="card-body">
 						<h2 class="card-title">{{ podcast.title }}</h2>

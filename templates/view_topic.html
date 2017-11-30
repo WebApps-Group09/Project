@@ -11,13 +11,19 @@
 			{% if podcasts %}
 				{% for podcast in podcasts %}
 				<div class="card mb-4">
-					<div class="card-header text-muted">
-						Posted on {{ podcast.created.date }} by
-						<a href="#">{{ podcast.author }}</a>
+					<div class="card-header text-muted">Posted by
+						<a href="/user/{{ podcast.author }}">{{ podcast.author }}</a> in 
+            			<a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
 					</div>
 					<div class="card-body">
 						<h2 class="card-title">{{ podcast.title }}</h2>
-						<p class="card-text">{% if podcast.description %}{{ podcast.description | slice:":125" }}...{% endif %}</p>
+						<p class="card-text">
+							{% if podcast.description %}
+								{{ podcast.description | slice:":125" }}
+								{% if podcast.description|length > 125 %}
+									...
+								{% endif %}
+							{% endif %}</p>
 						<a href="/podcast/{{podcast.slugfield}}/" class="btn btn-secondary">Listen Now</a>
 					</div>
 					<div class="card-footer text-muted">
