@@ -12,6 +12,7 @@ urlpatterns = [
     ])),
   ])),
   url(r'^list/$', PodcastList.as_view(), name='list'),
+  url(r'^profile/(?P<username>[\w-]+)/', ProfileView.as_view(), name='profile'),
   url(r'^random/$', random, name='random'),
   url(r'^podcast/(?P<slugfield>[\w-]+)/', PodcastView.as_view()),
   url(r'^dashboard/', include([

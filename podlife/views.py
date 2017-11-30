@@ -54,6 +54,30 @@ class PodcastList(ListView):
     podcasts['topics'] = Topic.objects.all()
     return podcasts
 
+class ProfileView(ListView):
+  template_name = 'profile.html'
+  context_object_name = 'podcasts'
+
+  def get_success_url(self):
+    return self.success_url
+
+  def get_queryset(self):
+    user = self.kwargs['username']
+    model = User
+    print(user)
+    user_id = User.objects.get(username=user).id
+    print(user_id)
+    model = Podcast
+    context = Podcast.objects.filter(author__id=user_id)
+    return context
+
+  def get_context_data(self, **kwargs):
+    podcasts = super(ProfileView, self).get_context_data(**kwargs)
+    podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
+    podcasts['topics'] = Topic.objects.all()
+
+    return podcasts  
+
 # Function called on /random/ to redirect to a random podcast
 def random(request):
   podcast = Podcast.objects.random()
