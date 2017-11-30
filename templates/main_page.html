@@ -18,7 +18,13 @@
 					</div>
 					<div class="card-body">
 						<h2 class="card-title">{{ podcast.title }}</h2>
-						<p class="card-text">{% if podcast.description %}{{ podcast.description | slice:":125" }}...{% endif %}</p>
+						<p class="card-text">
+							{% if podcast.description %}
+								{{ podcast.description | slice:":125" }}
+								{% if podcast.description|length > 125 %}
+									...
+								{% endif %}
+							{% endif %}</p>
 						<a href="/podcast/{{podcast.slugfield}}/" class="btn btn-secondary">Listen Now</a>
 					</div>
 					<div class="card-footer text-muted">
