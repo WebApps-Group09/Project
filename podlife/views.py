@@ -31,7 +31,20 @@ class UserView(TemplateView):
 # View list of podcasts from a specific pod
 class TopicView(ListView):
     template_name = 'view_topic.html'
-    # TODO: display a list of all podcasts in that pod
+    model = Podcast
+    context_object_name = 'podcasts'
+
+    def get_queryset(self):
+        topic = Topic.objects.get(topic=self.kwargs['topic'])
+        podcasts = topic.podcast_set.all()
+        return podcasts
+
+    def get_context_data(self, **kwargs):
+        context = super(TopicView, self).get_context_data(**kwargs)
+        context['topic'] = Topic.objects.get(topic=self.kwargs['topic'])
+        context['topic'].topic = context['topic'].topic.title()
+        context['topics'] = Topic.objects.all()
+        return context
 
 
 # Main dashboard for trending podcasts and allow filtering by pods
@@ -43,16 +56,16 @@ class MainPage(ListView):
     def get_queryset(self):
         title_filter = self.request.GET.get('titlefilter', '')
         if title_filter:
-            context = Podcast.objects.filter(title__icontains=title_filter)
+            podcasts = Podcast.objects.filter(title__icontains=title_filter)
         else:
-            context = Podcast.objects.all()
-        return context
+            podcasts = Podcast.objects.all()
+        return podcasts
 
     def get_context_data(self, **kwargs):
-        podcasts = super(MainPage, self).get_context_data(**kwargs)
-        podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
-        podcasts['topics'] = Topic.objects.all()
-        return podcasts
+        context = super(MainPage, self).get_context_data(**kwargs)
+        context['titlefilter'] = self.request.GET.get('titlefilter', '')
+        context['topics'] = Topic.objects.all()
+        return context
 
 
 # Function called on /random/ to redirect to a random podcast

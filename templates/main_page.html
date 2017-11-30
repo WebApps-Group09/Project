@@ -57,18 +57,16 @@
 				<div class="card-body">
 					<div class="row">
 					{% for topic in topics %}
-						{% if forloop.first %}
 						<div class="col-sm-6">
-						{% endif %}
-							<a class="btn btn-link" href="/topic/{{topic.topic}}">{{ topic.topic }}</a> {% if forloop.counter|divisibleby:3 %}
+							<a class="btn btn-link" href="/topic/{{topic.topic}}">{{ topic.topic }}</a>
 						</div>
-						<div class="col-sm-6">
-						{% endif %}
 						{% if forloop.last %}
-						</div>
+					</div>
+						{% elif forloop.counter|divisibleby:2 %}
+					</div>
+					<div class="row">
 						{% endif %}
 					{% endfor %}
-					</div>
 				</div>
 			</div>
 		</div>

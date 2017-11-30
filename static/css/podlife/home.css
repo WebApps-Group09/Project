@@ -7,16 +7,6 @@ body {
     }
 }
 
-.a {
-	color: #727b84;
-	text-decoration: none;
-}
-
-.a:hover {
-	color: #727b84;
-	text-decoration: none;
-}
-
 .container-fluid {
 	padding: 0;
   margin: 0;
