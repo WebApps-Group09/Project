@@ -3,12 +3,25 @@
 
 {% block body %}
 <div class="container body">
-  <h2>{{podcast.title}}</h2>
+  <h2>
+    {{podcast.title}}
+    {% if user.is_authenticated %}
+      {% if subscribed %}
+        <button type="submit" class="btn btn-secondary pull-right" value="unfavorite" name="unfavorite">Unfavorite</button>
+      {% else %}
+        <button type="submit" class="btn btn-secondary pull-right" value="favorite" name="favorite">Favorite</button>
+      {% endif %}
+    {% endif %}
+  </h2>
   <hr>
   <div class="row">
     <div class="col-sm-10">
-      <small class="text-muted">by <span>{{podcast.author.username}}</span></small><br>
-      <p>{{podcast.topic.topic}}</p>
+      <small class="text-muted">
+        <p>by
+          <a href="/user/{{ podcast.author.username }}">{{ podcast.author.username }}</a> in
+          <a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
+        </p>
+      </small>
       <p>{{podcast.description}}</p>
       <audio controls>
         <source src="{{ podcast.audio_file.url }}" type="audio/mpeg">
@@ -27,6 +40,7 @@
           <strong>Updated:</strong> {{podcast.updated.date|date:"m/d/y"}}<br>
           <strong>Views:</strong> {{podcast.views}}<br>
           <strong>Comments:</strong> {{podcast.num_comments}}
+          <strong>Favorites:</strong> {{podcast.num_favorites}}
         </em>
       </small>
     </div>

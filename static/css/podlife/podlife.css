@@ -1,114 +1,102 @@
 body {
-  font-family: 'Lato', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 body {
-  padding-top: 54px;
+    padding-top: 54px;
 }
 
 @media (min-width: 992px) {
-  body {
-    padding-top: 56px;
-  }
+    body {
+        padding-top: 56px;
+    }
 }
 
 .body {
-  margin-top: 40px;
+    margin-top: 40px;
 }
 
 .content {
-  margin-top: 15px;
+    margin-top: 15px;
 }
 
 .container-fluid {
-  width: 100% !IMPORTANT;
+    width: 100% !important;
 }
 
 .dropdown-menu {
-  left: auto;
-  right: 0;
+    left: auto;
+    right: 0;
 }
 
-a {
-	color: #727b84;
-	text-decoration: none;
-}
-
-a:hover {
-	color: #727b84;
-	text-decoration: none;
-}
-
-.btn-link {
-	color: #727b84;
-	text-decoration: none;
-}
-
-.btn-link:hover {
-	color: #727b84;
-	text-decoration: none;
+.nav-link {
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
 }
 
 ul {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 .clearfix:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0;
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
 }
+
 .clearfix {
-  display: inline-block;
+    display: inline-block;
 }
+
 * html .clearfix {
-  height: 1%;
+    height: 1%;
 }
+
 .clearfix {
-  display: block;
+    display: block;
 }
 
 .row {
-  margin: 0 auto;
-  width: 100%;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .column {
-  float: left;
+    float: left;
 }
 
 .span_4 {
-  width: 33.3333%;
+    width: 33.3333%;
 }
 
 #addpicture {
-  height: 150px;
-  width: 150px;
-  background-color: #e9ecef;
-  color: rgba(52, 58, 64, 0.5);
-  text-align: center;
-  font-size: 50px;
-  padding-top: 35px;
-  margin-left: 15px;
-  cursor: pointer;
+    height: 150px;
+    width: 150px;
+    background-color: #e9ecef;
+    color: rgba(52, 58, 64, 0.5);
+    text-align: center;
+    font-size: 50px;
+    padding-top: 35px;
+    margin-left: 15px;
+    cursor: pointer;
 }
 
 #logo {
-  height: 40px;
-  padding-right: 5px;
-  margin: 5px 10px 5px 0;
+    height: 40px;
+    padding-right: 5px;
+    margin: 5px 10px 5px 0;
 }
 
-.container-fluid > .container {
-  margin-left: 0px;
-  width: 100% !IMPORTANT;
+.container-fluid>.container {
+    margin-left: 0px;
+    width: 100% !IMPORTANT;
 }
 
 .btn {
-	cursor: pointer !IMPORTANT;
+    cursor: pointer !important;
 }
 
 .vote-col{

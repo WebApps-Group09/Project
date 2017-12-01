@@ -32,7 +32,24 @@
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			{% block sidebar %} {% endblock %}
 			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/podcast/">Home</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle mr-lg-2" id="topicDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Pods
+					</a>
+					<div class="dropdown-menu" aria-labelledby="topicDropdown">
+						{% for topic in topics %}
+							<a class="dropdown-item" href="/topic/{{ topic.topic }}">{{ topic.topic }}</a>
+						{% endfor %}
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/user/">Users</a>
+				</li>
 				{% if user.is_authenticated %}
+				<!--
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle mr-lg-2" id="dashboardDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Hello,&nbsp;{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}
@@ -47,15 +64,19 @@
 						{% endif %}
 					</div>
 				</li>
+				-->
+				<li class="nav-item">
+					<a class="nav-link" href="/dashboard/">Dashboard</a>
+				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="modal" data-target="#LogoutModal">
-						<i class="fa fa-fw fa-sign-out"></i>Logout
+						Logout
 					</a>
 				</li>
 				{% else %}
 				<li class="nav-item">
 					<a class="nav-link" href="{% if request.path == '/logout/' %}{% url 'login' %}{% else %}{% url 'login' %}?next={{request.path}}{% endif %}">
-						Login<i class="fa fa-fw fa-sign-in"></i>
+						Login
 					</a>
 				</li>
 				{% endif %}
