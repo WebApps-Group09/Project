@@ -18,7 +18,7 @@
     <div class="col-sm-2">
       {% if podcast.author.username == user.username %}
       <p>
-        <input class="btn btn-secondary" type="submit" value="Edit Podcast"/>
+        <a href="/dashboard/manage/podcast/{{ podcast.slugfield }}" class="btn btn-secondary" role="button">Edit Podcast</a>
       </p>
       {% endif %}
       <small>
