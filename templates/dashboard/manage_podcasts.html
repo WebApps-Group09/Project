@@ -49,3 +49,13 @@
 		</div>
 	</div>
 {% endblock %}
+
+{% block js %}
+<script>
+	function populate_slugfield(slug) {
+		console.log(slug);
+		var form_field = document.getElementById('slugfieldid');
+		form_field.value = slug;
+	}
+</script>
+{% endblock %}
