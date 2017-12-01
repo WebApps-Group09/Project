@@ -5,4 +5,9 @@
 <div class="container body">
   <h2>Users</h2>
 	<hr>
+  {% for u in users %}
+    <p>
+      <a href="/user/{{ u.username }}">{{ u.username }}</a>
+    </p>
+  {% endfor %}
 {% endblock %}

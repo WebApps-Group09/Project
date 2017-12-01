@@ -14,59 +14,13 @@ from podlife.models import Comment, Podcast, Topic
 class HomePage(TemplateView):
     template_name = 'home.html'
 
-
-# List all users
-class ListUsers(TemplateView):
-    template_name = 'list_users.html'
-    # TODO: link to specific user pages
-
-
-# View a specific user's uploaded podcasts
-class UserView(ListView):
-  template_name = 'view_user.html'
-  context_object_name = 'podcasts'
-
-  def get_success_url(self):
-    return self.success_url
-
-  def get_queryset(self):
-    user = self.kwargs['username']
-    model = User
-    print(user)
-    user_id = User.objects.get(username=user).id
-    print(user_id)
-    model = Podcast
-    context = Podcast.objects.filter(author__id=user_id)
-    return context
-
-  def get_context_data(self, **kwargs):
-    podcasts = super(UserView, self).get_context_data(**kwargs)
-    podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
-    podcasts['topics'] = Topic.objects.all()
-
-    return podcasts 
-
-
-# View list of podcasts from a specific pod
-class TopicView(ListView):
-    template_name = 'view_topic.html'
-    model = Podcast
-    context_object_name = 'podcasts'
-
-    def get_queryset(self):
-        topic = Topic.objects.get(topic=self.kwargs['topic'])
-        podcasts = topic.podcast_set.all()
-        return podcasts
-
     def get_context_data(self, **kwargs):
-        context = super(TopicView, self).get_context_data(**kwargs)
-        context['topic'] = Topic.objects.get(topic=self.kwargs['topic'])
-        context['topic'].topic = context['topic'].topic.title()
+        context = super(HomePage, self).get_context_data(**kwargs)
         context['topics'] = Topic.objects.all()
         return context
 
 
-# Main dashboard for trending podcasts and allow filtering by pods
+# Main page for trending podcasts and allow filtering by pods
 class MainPage(ListView):
     template_name = 'main_page.html'
     model = Podcast
@@ -86,30 +40,6 @@ class MainPage(ListView):
         context['topics'] = Topic.objects.all()
         return context
 
-
-class ProfileView(ListView):
-  template_name = 'profile.html'
-  context_object_name = 'podcasts'
-
-  def get_success_url(self):
-    return self.success_url
-
-  def get_queryset(self):
-    user = self.kwargs['username']
-    model = User
-    print(user)
-    user_id = User.objects.get(username=user).id
-    print(user_id)
-    model = Podcast
-    context = Podcast.objects.filter(author__id=user_id)
-    return context
-
-  def get_context_data(self, **kwargs):
-    podcasts = super(ProfileView, self).get_context_data(**kwargs)
-    podcasts['titlefilter'] = self.request.GET.get('titlefilter', '')
-    podcasts['topics'] = Topic.objects.all()
-
-    return podcasts  
 
 # Function called on /random/ to redirect to a random podcast
 def random(request):
@@ -131,11 +61,11 @@ class PodcastView(TemplateView):
         podcast = Podcast.objects.get(slugfield=kwargs['slugfield'])
         podcast.views += 1
         podcast.save()
-        comments = Comment.objects.filter(
-            podcast_id=podcast.id).order_by('-created')
+        comments = Comment.objects.filter(podcast_id=podcast.id).order_by('-created')
         context = {}
         context['podcast'] = podcast
         context['comments'] = comments
+        context['topics'] = Topic.objects.all()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -154,20 +84,89 @@ class PodcastView(TemplateView):
             return HttpResponseRedirect('/podcast/' + kwargs['slugfield'] + '/')
 
 
+# List all users
+class ListUsers(ListView):
+    template_name = 'list_users.html'
+    model = User
+    context_object_name = 'users'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListUsers, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all()
+        return context
+
+
+# View a specific user's uploaded podcasts
+class UserView(ListView):
+    template_name = 'view_user.html'
+    model = Podcast
+    context_object_name = 'podcasts'
+
+    def get_success_url(self):
+        return self.success_url
+
+    def get_queryset(self):
+        user = self.kwargs['username']
+        user_id = User.objects.get(username=user).id
+        podcasts = Podcast.objects.filter(author__id=user_id)
+        return podcasts
+
+    def get_context_data(self, **kwargs):
+        context = super(UserView, self).get_context_data(**kwargs)
+        context['titlefilter'] = self.request.GET.get('titlefilter', '')
+        context['topics'] = Topic.objects.all()
+        context['username'] = self.kwargs['username']
+        return context
+
+
+# View list of podcasts from a specific pod
+class TopicView(ListView):
+    template_name = 'view_topic.html'
+    model = Podcast
+    context_object_name = 'podcasts'
+
+    def get_queryset(self):
+        topic = Topic.objects.get(topic=self.kwargs['topic'])
+        podcasts = topic.podcast_set.all()
+        return podcasts
+
+    def get_context_data(self, **kwargs):
+        context = super(TopicView, self).get_context_data(**kwargs)
+        context['topic'] = Topic.objects.get(topic=self.kwargs['topic'])
+        context['topic'].topic = context['topic'].topic.title()
+        context['topics'] = Topic.objects.all()
+        return context
+
+
 # Dashboard for users/content creators
 # Main page with statistics recent subscriptions
 class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Dashboard, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all()
+        return context
 
 
 # View a list of subscriptions and updates
 class Subscriptions(LoginRequiredMixin, TemplateView):
     template_name = 'subscriptions.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(Subscriptions, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all()
+        return context
+
 
 # Statistics about uploaded podcasts
 class Statistics(LoginRequiredMixin, TemplateView):
     template_name = 'statistics.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Statistics, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all()
+        return context
 
 
 # Set the user profile and other user settings
@@ -182,6 +181,7 @@ class UserSettings(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserSettings, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all()
         return context
 
 
@@ -195,7 +195,13 @@ class ManagePodcasts(LoginRequiredMixin, ListView):
         context = Podcast.objects.filter(author__id=self.request.user.id)
         return context
 
+    def get_context_data(self, **kwargs):
+        context = super(ManagePodcasts, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all()
+        return context
 
+
+# Delete a podcast
 class DeletePodcast(LoginRequiredMixin, DeleteView):
     model = Podcast
 
@@ -219,7 +225,8 @@ class UploadPodcast(LoginRequiredMixin, CreateView):
         topic_id = self.request.POST['topics']
         form.instance.topic = Topic.objects.get(id=topic_id)
         form.instance.author = self.request.user
-        slugfield = ''.join(w for w in form.instance.title.lower().replace(' ', '_') if (w.isalnum() or w == '_'))
+        slugfield = ''.join(w for w in form.instance.title.lower(
+        ).replace(' ', '_') if (w.isalnum() or w == '_'))
         form.instance.slugfield = slugfield
         self.success_url = '/podcast/' + slugfield
         return super(UploadPodcast, self).form_valid(form)
@@ -244,7 +251,6 @@ class UpdatePodcast(LoginRequiredMixin, UpdateView):
         context = super(UpdatePodcast, self).get_context_data(**kwargs)
         context['title'] = 'Edit Podcast'
         context['topics'] = Topic.objects.all()
-        print(context['topics'])
         return context
 
     def form_valid(self, form):
@@ -263,6 +269,11 @@ class ManageTopics(ListView):
     model = Topic
     context_object_name = 'topics'
 
+    def get_context_data(self, **kwargs):
+        context = super(ManageTopics, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all()
+        return context
+
 
 # Create a new topic
 class CreateTopic(CreateView):
@@ -271,3 +282,8 @@ class CreateTopic(CreateView):
     slug_field = 'topic'
     success_url = '/dashboard/manage/topic/'
     fields = ['topic', 'description']
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateTopic, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all()
+        return context

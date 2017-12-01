@@ -1,34 +1,35 @@
 body {
-	padding-top: 54px;
+    padding-top: 54px;
 }
+
 @media (min-width: 992px) {
     body {
-          padding-top: 56px;
+        padding-top: 56px;
     }
 }
 
 .container-fluid {
-	padding: 0;
-  margin: 0;
-  width: 100% !IMPORTANT;
+    padding: 0;
+    margin: 0;
+    width: 100% !IMPORTANT;
 }
 
 #background {
-	height: 600px;
-	background: url('/static/img/pod.jpg') no-repeat center fixed;
-	background-size: cover;
+    height: 600px;
+    background: url('/static/img/pod.jpg') no-repeat center fixed;
+    background-size: cover;
 }
 
 #welcome {
-	margin-top: 100px;
-	text-align: center;
-	color: white;
+    margin-top: 100px;
+    text-align: center;
+    color: white;
 }
 
 #rightbtn {
-	width: 107px;
+    width: 107px;
 }
 
 #about {
-	padding: 15px;
+    padding: 15px;
 }
