@@ -110,3 +110,18 @@ ul {
 .btn {
 	cursor: pointer !IMPORTANT;
 }
+
+.vote-col{
+	padding: 0px;
+	text-align: center;
+}
+
+.vote-group{
+	text-align: center;
+	position: relative;
+    top: 23%;
+}
+
+.vote-arrow{
+	font-size: 30px;
+}

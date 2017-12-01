@@ -187,19 +187,31 @@ class UserSettings(LoginRequiredMixin, UpdateView):
 
 # Manage podcasts uploaded onto the site - delete/option to edit
 class ManagePodcasts(LoginRequiredMixin, ListView):
-    template_name = 'manage_podcasts.html'
-    model = Podcast
-    context_object_name = 'podcasts'
+	template_name = 'manage_podcasts.html'
+	model = Podcast
+	context_object_name = 'podcasts'
+	slug_field = 'slugfield'
+	slug_url_kwarg = 'slugfield'
+	
+	def get_queryset(self):
+		context = Podcast.objects.filter(author__id=self.request.user.id)
+		return context
 
-    def get_queryset(self):
-        context = Podcast.objects.filter(author__id=self.request.user.id)
-        return context
-
-
+	def post(self, request, *args, **kwargs):
+		if request.method == 'POST':
+			slug = self.request.POST['slugfield']
+			podcast = Podcast.objects.get(slugfield=slug)
+			podcast.delete()
+			
+			return HttpResponseRedirect('/dashboard/manage/podcast/')
+			
 class DeletePodcast(LoginRequiredMixin, DeleteView):
-    model = Podcast
-
-
+	#template_name = 'podcast_confirm_delete.html'
+	model = Podcast
+	success_url = '/dashboard/manage/podcast/'
+	slug_field = 'slugfield'
+	slug_url_kwarg = 'slugfield'
+		
 # Upload a new podcast onto the site
 class UploadPodcast(LoginRequiredMixin, CreateView):
     template_name = 'podcast_form.html'

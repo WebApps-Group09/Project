@@ -22,8 +22,8 @@ urlpatterns = [
         url(r'^manage/', include([
             url(r'^podcast/', include([
                 url(r'^$', ManagePodcasts.as_view(), name='manage_podcasts'),
-                url(r'^(?P<slugfield>[\w-]+)/$', UpdatePodcast.as_view()),
-                url(r'^(?P<slugfield>[\w-]+)/$', DeletePodcast.as_view()),
+                url(r'^edit/(?P<slugfield>[\w-]+)/$', UpdatePodcast.as_view()),
+                url(r'^delete/(?P<slugfield>[\w-]+)/$', DeletePodcast.as_view()),
             ])),
             url(r'topic/$', ManageTopics.as_view(), name='manage_topics'),
         ])),
