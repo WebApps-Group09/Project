@@ -150,31 +150,11 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
 
 # View a list of subscriptions and updates
-class ManageFavorites(LoginRequiredMixin, TemplateView):
-    template_name = 'manage_favorites.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ManageFavorites, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all().order_by('topic')
-        return context
-
-
-# View a list of subscriptions and updates
 class ManageSubscriptions(LoginRequiredMixin, TemplateView):
     template_name = 'manage_subscriptions.html'
 
     def get_context_data(self, **kwargs):
         context = super(ManageSubscriptions, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all().order_by('topic')
-        return context
-
-
-# Statistics about uploaded podcasts
-class Statistics(LoginRequiredMixin, TemplateView):
-    template_name = 'statistics.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(Statistics, self).get_context_data(**kwargs)
         context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
@@ -225,9 +205,7 @@ class UploadPodcast(LoginRequiredMixin, CreateView):
     template_name = 'podcast_form.html'
     model = Podcast
     fields = ['title', 'description', 'audio_file', 'file_type']
-
-    def get_success_url(self):
-        return self.success_url
+    success_url = '/dashboard/manage/podcast/'
 
     def get_context_data(self, **kwargs):
         context = super(UploadPodcast, self).get_context_data(**kwargs)
@@ -246,7 +224,6 @@ class UploadPodcast(LoginRequiredMixin, CreateView):
         slugfield = ''.join(w for w in form.instance.title.lower(
         ).replace(' ', '_') if (w.isalnum() or w == '_'))
         form.instance.slugfield = slugfield
-        self.success_url = '/podcast/' + slugfield
         return super(UploadPodcast, self).form_valid(form)
 
     def form_invalid(self, form):

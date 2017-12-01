@@ -13,13 +13,6 @@
       <span class="nav-link-text">Dashboard</span>
     </a>
 	</li>
-	<li class="nav-divider"></li>
-	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Statistics">
-		<a class="nav-link" href="{% url 'stats' %}">
-      <i class="fa fa-fw fa-line-chart"></i>
-      <span class="nav-link-text">Statistics</span>
-    </a>
-	</li>
 	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create">
 		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseCreate" data-parent="#Dashboard">
 			<i class="fa fa-fw fa-plus"></i>
@@ -46,16 +39,8 @@
 				<a href="{% url 'manage_subs' %}">Subscriptions</a>
 			</li>
 			<li>
-				<a href="{% url 'manage_favs' %}">Favorites</a>
-			</li>
-			<li>
 				<a href="{% url 'manage_podcasts' %}">Podcasts</a>
 			</li>
-			{% if user.is_superuser %}
-			<li>
-				<a href="{% url 'manage_topics' %}">Pods</a>
-			</li>
-			{% endif %}
 		</ul>
 	</li>
 	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">

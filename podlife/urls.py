@@ -17,7 +17,6 @@ urlpatterns = [
     ])),
     url(r'^dashboard/', include([
         url(r'^$', Dashboard.as_view(), name='dashboard'),
-        url(r'^stats/$', Statistics.as_view(), name='stats'),
         url(r'^manage/', include([
             url(r'^podcast/', include([
                 url(r'^$', ManagePodcasts.as_view(), name='manage_podcasts'),
@@ -25,7 +24,6 @@ urlpatterns = [
             ])),
             url(r'^topic/$', ManageTopics.as_view(), name='manage_topics'),
             url(r'^subs/$', ManageSubscriptions.as_view(), name="manage_subs"),  # TODO
-            url(r'^favs/$', ManageFavorites.as_view(), name="manage_favs"),  # TODO
         ])),
         url(r'^create/', include([
             url(r'^podcast/$', UploadPodcast.as_view(), name='upload_podcast'),

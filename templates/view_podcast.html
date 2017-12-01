@@ -4,7 +4,7 @@
 {% block body %}
 <div class="container body">
   <h2>
-    {{podcast.title}}
+    {{ podcast.title }}
   </h2>
   <hr>
   <div class="row">
@@ -15,35 +15,19 @@
           <a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
         </p>
       </small>
-      <p>{{podcast.description}}</p>
+      <p>{{ podcast.description }}</p>
       <audio controls>
         <source src="{{ podcast.audio_file.url }}" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
     </div>
     <div class="col-sm-2">
-      {% if podcast.author.username == user.username %}
-      <p>
-        {% if user.is_authenticated %}
-          {% if favorited %}
-            <button type="submit" class="btn btn-secondary" value="unfavorite" name="unfavorite">
-              <i class="fa fa-star" aria-hidden="true"></i>
-            </button>
-          {% else %}
-            <button type="submit" class="btn btn-secondary" value="favorite" name="favorite">
-              <i class="fa fa-star-o" aria-hidden="true"></i>
-            </button>
-          {% endif %}
-        {% endif %}
-      </p>
-      {% endif %}
       <small>
         <em class="text-muted">
-          <strong>Created:</strong> {{podcast.created.date|date:"m/d/y"}}<br>
-          <strong>Updated:</strong> {{podcast.updated.date|date:"m/d/y"}}<br>
-          <strong>Views:</strong> {{podcast.views}}<br>
-          <strong>Comments:</strong> {{podcast.num_comments}}
-          <strong>Favorites:</strong> {{podcast.num_favorites}}
+          <strong>Created:</strong> {{ podcast.created.date|date:"m/d/y" }}<br>
+          <strong>Updated:</strong> {{ podcast.updated.date|date:"m/d/y" }}<br>
+          <strong>Views:</strong> {{ podcast.views }}<br>
+          <strong>Comments:</strong> {{ podcast.num_comments }}
         </em>
       </small>
     </div>
@@ -67,10 +51,10 @@
     <div class="list-group">
       {% for comment in comments %}
         <span class="list-group-item">
-          <p class="list-group-item-text">{{comment.comment}}</p>
+          <p class="list-group-item-text">{{ comment.comment }}</p>
           <small>
             <em class="text-muted">
-              <strong>{{comment.author.username}}</strong> on {{comment.created}}
+              <strong>{{ comment.author.username }}</strong> on {{ comment.created }}
             </em>
           </small>
         </span>

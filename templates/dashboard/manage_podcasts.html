@@ -9,7 +9,6 @@
 	{% if podcasts %}
 		{% for podcast in podcasts %}
 		<div class="row">
-
 			<div style="padding-right:10px;">
 				<a id="{{podcast.slugfield}}" onclick="populate_slugfield(this.id)" data-toggle="modal" data-target="#DeleteModal" class="btn btn-danger" style="color: white;" role="button">
 					<i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -17,12 +16,16 @@
 				<a href="/dashboard/manage/podcast/{{ podcast.slugfield }}" class="btn btn-primary" role="button">
 					<i class="fa fa-pencil" aria-hidden="true"></i>
 				</a>
+				<a href="/podcast/{{ podcast.slugfield }}" class="btn btn-secondary" role="button">
+					<i class="fa fa-eye" aria-hidden="true"></i>
+				</a>
 			</div>
 			<div style="padding-left:10px;">
 				<h6>{{ podcast.title }}</h6>
 				<small>{{ podcast.description }}</small>
 			</div>
 		</div>
+		<hr>
 		{% endfor %}
 	{% else %}
 		<p>You haven't uploaded any podcasts</p>
