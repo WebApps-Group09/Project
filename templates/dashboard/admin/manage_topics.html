@@ -16,7 +16,8 @@
       </div>
     {% endfor %}
   {% else %}
-    <p>No pods</p>
+    <p>No existing pods</p>
+    <a href="{% url 'create_topic' %}" class="btn btn-primary" role="button">Create a Pod</a>
   {% endif %}
 </div>
 {% endblock %}

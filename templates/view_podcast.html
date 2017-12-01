@@ -5,13 +5,6 @@
 <div class="container body">
   <h2>
     {{podcast.title}}
-    {% if user.is_authenticated %}
-      {% if subscribed %}
-        <button type="submit" class="btn btn-secondary pull-right" value="unfavorite" name="unfavorite">Unfavorite</button>
-      {% else %}
-        <button type="submit" class="btn btn-secondary pull-right" value="favorite" name="favorite">Favorite</button>
-      {% endif %}
-    {% endif %}
   </h2>
   <hr>
   <div class="row">
@@ -31,7 +24,17 @@
     <div class="col-sm-2">
       {% if podcast.author.username == user.username %}
       <p>
-        <a href="/dashboard/manage/podcast/edit/{{ podcast.slugfield }}" class="btn btn-secondary" role="button">Edit Podcast</a>
+        {% if user.is_authenticated %}
+          {% if favorited %}
+            <button type="submit" class="btn btn-secondary" value="unfavorite" name="unfavorite">
+              <i class="fa fa-star" aria-hidden="true"></i>
+            </button>
+          {% else %}
+            <button type="submit" class="btn btn-secondary" value="favorite" name="favorite">
+              <i class="fa fa-star-o" aria-hidden="true"></i>
+            </button>
+          {% endif %}
+        {% endif %}
       </p>
       {% endif %}
       <small>
@@ -48,7 +51,8 @@
   <hr>
   <h3>Comments</h3>
   {% if user.is_authenticated %}
-    <form method="post">{% csrf_token %}
+    <form method="post">
+      {% csrf_token %}
       <div class="form-group">
         <textarea name="comment" placeholder="Write a comment" cols="40" class="form-control" required rows="5"></textarea>
       </div>

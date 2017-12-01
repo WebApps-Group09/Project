@@ -6,17 +6,11 @@
 {% endblock %}
 
 {% block sidebar %}
-<ul class="navbar-nav navbar-sidenav">
+<ul class="navbar-nav navbar-sidenav" id="Dashboard">
 	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
 		<a class="nav-link" href="{% url 'dashboard' %}">
       <i class="fa fa-fw fa-dashboard"></i>
       <span class="nav-link-text">Dashboard</span>
-    </a>
-	</li>
-	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Subscriptions">
-		<a class="nav-link" href="{% url 'subs' %}">
-      <i class="fa fa-fw fa-bell"></i>
-      <span class="nav-link-text">Subscriptions</span>
     </a>
 	</li>
 	<li class="nav-divider"></li>
@@ -26,32 +20,44 @@
       <span class="nav-link-text">Statistics</span>
     </a>
 	</li>
-	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage">
-		<a class="nav-link" href="{% url 'manage_podcasts' %}">
-      <i class="fa fa-fw fa-folder-open"></i>
-      <span class="nav-link-text">Manage Podcasts</span>
-    </a>
-	</li>
-	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Upload Podcast">
-		<a class="nav-link" href="{% url 'upload_podcast' %}">
-      <i class="fa fa-fw fa-upload"></i>
-      <span class="nav-link-text">Upload Podcast</span>
-    </a>
-	</li>
-	{% if user.is_superuser %}
-	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage Pods">
-		<a class="nav-link" href="{% url 'manage_topics' %}">
-			<i class="fa fa-fw fa-folder-open"></i>
-			<span class="nav-link-text">Manage Pods</span>
-		</a>
-	</li>
-	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create Pod">
-		<a class="nav-link" href="{% url 'create_topic' %}">
+	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create">
+		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseCreate" data-parent="#Dashboard">
 			<i class="fa fa-fw fa-plus"></i>
-			<span class="nav-link-text">Create Pod</span>
+			<span class="nav-link-text">Create</span>
 		</a>
+		<ul class="sidenav-second-level collapse" id="collapseCreate">
+			<li>
+				<a href="{% url 'upload_podcast' %}">Upload Podcast</a>
+			</li>
+			{% if user.is_superuser %}
+			<li>
+				<a href="{% url 'create_topic' %}">Create Pod</a>
+			</li>
+			{% endif %}
+		</ul>
 	</li>
-	{% endif %}
+	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage">
+		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseManage" data-parent="#Dashboard">
+			<i class="fa fa-fw fa-folder-open"></i>
+			<span class="nav-link-text">Manage</span>
+		</a>
+		<ul class="sidenav-second-level collapse" id="collapseManage">
+			<li>
+				<a href="{% url 'manage_subs' %}">Subscriptions</a>
+			</li>
+			<li>
+				<a href="{% url 'manage_favs' %}">Favorites</a>
+			</li>
+			<li>
+				<a href="{% url 'manage_podcasts' %}">Podcasts</a>
+			</li>
+			{% if user.is_superuser %}
+			<li>
+				<a href="{% url 'manage_topics' %}">Pods</a>
+			</li>
+			{% endif %}
+		</ul>
+	</li>
 	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
 		<a class="nav-link" href="{% url 'settings' %}">
       <i class="fa fa-fw fa-cog"></i>

@@ -34,10 +34,6 @@ body {
     padding-left: 1rem !important;
 }
 
-ul {
-    list-style-type: none;
-}
-
 .clearfix:after {
     visibility: hidden;
     display: block;

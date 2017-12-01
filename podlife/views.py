@@ -16,7 +16,7 @@ class HomePage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomePage, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
@@ -32,12 +32,12 @@ class MainPage(ListView):
             podcasts = Podcast.objects.filter(title__icontains=title_filter)
         else:
             podcasts = Podcast.objects.all()
-        return podcasts
+        return podcasts.order_by('-views')
 
     def get_context_data(self, **kwargs):
         context = super(MainPage, self).get_context_data(**kwargs)
         context['titlefilter'] = self.request.GET.get('titlefilter', '')
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
@@ -65,7 +65,7 @@ class PodcastView(TemplateView):
         context = {}
         context['podcast'] = podcast
         context['comments'] = comments
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -92,7 +92,7 @@ class ListUsers(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListUsers, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
@@ -114,7 +114,7 @@ class UserView(ListView):
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
         context['titlefilter'] = self.request.GET.get('titlefilter', '')
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         context['username'] = self.kwargs['username']
         return context
 
@@ -134,7 +134,7 @@ class TopicView(ListView):
         context = super(TopicView, self).get_context_data(**kwargs)
         context['topic'] = Topic.objects.get(topic=self.kwargs['topic'])
         context['topic'].topic = context['topic'].topic.title()
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
@@ -145,17 +145,27 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
 # View a list of subscriptions and updates
-class Subscriptions(LoginRequiredMixin, TemplateView):
-    template_name = 'subscriptions.html'
+class ManageFavorites(LoginRequiredMixin, TemplateView):
+    template_name = 'manage_favorites.html'
 
     def get_context_data(self, **kwargs):
-        context = super(Subscriptions, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all()
+        context = super(ManageFavorites, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all().order_by('topic')
+        return context
+
+
+# View a list of subscriptions and updates
+class ManageSubscriptions(LoginRequiredMixin, TemplateView):
+    template_name = 'manage_subscriptions.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ManageSubscriptions, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
@@ -165,7 +175,7 @@ class Statistics(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Statistics, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
@@ -181,35 +191,35 @@ class UserSettings(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserSettings, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
 # Manage podcasts uploaded onto the site - delete/option to edit
 class ManagePodcasts(LoginRequiredMixin, ListView):
-	template_name = 'manage_podcasts.html'
-	model = Podcast
-	context_object_name = 'podcasts'
-	slug_field = 'slugfield'
-	slug_url_kwarg = 'slugfield'
-	
-	def get_queryset(self):
-		context = Podcast.objects.filter(author__id=self.request.user.id)
-		return context
+    template_name = 'manage_podcasts.html'
+    model = Podcast
+    context_object_name = 'podcasts'
+    slug_field = 'slugfield'
+    slug_url_kwarg = 'slugfield'
 
-	def post(self, request, *args, **kwargs):
-		if request.method == 'POST':
-			slug = self.request.POST['slugfield']
-			podcast = Podcast.objects.get(slugfield=slug)
-			podcast.delete()
-			
-			return HttpResponseRedirect('/dashboard/manage/podcast/')
-			
-	def get_context_data(self, **kwargs):
-		context = super(ManagePodcasts, self).get_context_data(**kwargs)
-		context['topics'] = Topic.objects.all()
-		return context
-		
+    def get_queryset(self):
+        context = Podcast.objects.filter(author__id=self.request.user.id)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            slug = self.request.POST['slugfield']
+            podcast = Podcast.objects.get(slugfield=slug)
+            podcast.delete()
+            return HttpResponseRedirect('/dashboard/manage/podcast/')
+
+    def get_context_data(self, **kwargs):
+        context = super(ManagePodcasts, self).get_context_data(**kwargs)
+        context['topics'] = Topic.objects.all().order_by('topic')
+        return context
+
+
 # Upload a new podcast onto the site
 class UploadPodcast(LoginRequiredMixin, CreateView):
     template_name = 'podcast_form.html'
@@ -221,13 +231,17 @@ class UploadPodcast(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(UploadPodcast, self).get_context_data(**kwargs)
-        context['title'] = 'Upload Podcast'
-        context['topics'] = Topic.objects.all()
+        context['function'] = 'Upload'
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
     def form_valid(self, form):
         topic_id = self.request.POST['topics']
-        form.instance.topic = Topic.objects.get(id=topic_id)
+        topic = Topic.objects.get(id=topic_id)
+        topic.num_podcasts += 1
+        topic.save()
+
+        form.instance.topic = topic
         form.instance.author = self.request.user
         slugfield = ''.join(w for w in form.instance.title.lower(
         ).replace(' ', '_') if (w.isalnum() or w == '_'))
@@ -244,7 +258,7 @@ class UploadPodcast(LoginRequiredMixin, CreateView):
 class UpdatePodcast(LoginRequiredMixin, UpdateView):
     template_name = 'podcast_form.html'
     model = Podcast
-    fields = ['title', 'description', 'audio_file', 'file_type']
+    fields = ['title', 'description']
     slug_field = 'slugfield'
     slug_url_kwarg = 'slugfield'
 
@@ -253,8 +267,8 @@ class UpdatePodcast(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdatePodcast, self).get_context_data(**kwargs)
-        context['title'] = 'Edit Podcast'
-        context['topics'] = Topic.objects.all()
+        context['function'] = 'Edit'
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
     def form_valid(self, form):
@@ -275,7 +289,7 @@ class ManageTopics(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ManageTopics, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
 
@@ -289,5 +303,5 @@ class CreateTopic(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateTopic, self).get_context_data(**kwargs)
-        context['topics'] = Topic.objects.all()
+        context['topics'] = Topic.objects.all().order_by('topic')
         return context

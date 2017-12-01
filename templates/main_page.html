@@ -37,16 +37,16 @@
 										{% endif %}
 									{% endif %}</p>
 								<a href="/podcast/{{podcast.slugfield}}/" class="btn btn-secondary">Listen Now</a>
-							</div>
+							</div><!--/.card-body-->
 							<div class="card-footer text-muted">
 								{{ podcast.views }} views |
 								{{ podcast.num_upvotes }} upvotes |
 								{{ podcast.num_comments }} comments |
 								{{ podcast.num_favorites }} favorites
-							</div>
-						</div>
+							</div><!--/.card-footer-->
+						</div><!--/.card-->
 					</div>
-				</div>
+				</div><!--/.row-->
 				{% endfor %}
 			{% else %}
 			<p>No podcasts found</p>

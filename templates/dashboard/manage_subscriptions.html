@@ -1,0 +1,13 @@
+{% extends "content_management.html" %}
+{% block title %}Manage Subscriptions{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<h2>Manage Subscriptions</h2>
+	<hr>
+	<!-- List all podcasts that a user has favorited -->
+	{% for podcast in subscriptions %}
+		<p>{{ podcast.title }}</p>
+	{% endfor %}
+</div>
+{% endblock %}

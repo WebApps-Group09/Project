@@ -5,57 +5,52 @@
 <div class="container-fluid">
 	<h2>Manage Podcasts</h2>
 	<hr>
-	<!-- list all podcasts that a user has uploaded -->
+	<!-- List all podcasts that a user has uploaded -->
 	{% if podcasts %}
 		{% for podcast in podcasts %}
-			<div class="row">
-				<div class="col-md-4">
-					<p>{{ podcast.title }}<p>
-				</div>
-				<div class="col-md-8">
-					<a id="{{podcast.slugfield}}" onclick="populate_slugfield(this.id)" data-toggle="modal" data-target="#DeleteModal" class="btn btn-danger" style="color: white;" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-					<a href="/dashboard/manage/podcast/edit/{{ podcast.slugfield }}" class="btn btn-primary" role="button"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-				</div>
+		<div class="row">
+
+			<div style="padding-right:10px;">
+				<a id="{{podcast.slugfield}}" onclick="populate_slugfield(this.id)" data-toggle="modal" data-target="#DeleteModal" class="btn btn-danger" style="color: white;" role="button">
+					<i class="fa fa-trash-o" aria-hidden="true"></i>
+				</a>
+				<a href="/dashboard/manage/podcast/{{ podcast.slugfield }}" class="btn btn-primary" role="button">
+					<i class="fa fa-pencil" aria-hidden="true"></i>
+				</a>
 			</div>
+			<div style="padding-left:10px;">
+				<h6>{{ podcast.title }}</h6>
+				<small>{{ podcast.description }}</small>
+			</div>
+		</div>
 		{% endfor %}
 	{% else %}
-		<p>You haven't uploaded any podcasts<p>
+		<p>You haven't uploaded any podcasts</p>
 		<a href="{% url 'upload_podcast' %}" class="btn btn-primary" role="button">Upload a Podcast</a>
 	{% endif %}
 </div>
 <!-- Delete Modal-->
-	<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="DeleteModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="DeleteModalLabel">Confirm Delete</h5>
-					<button class="close" type="button" data-dismiss="modal" aria-label="Cancel">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					Are you sure you want to delete this podcast?
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-					<!--<a class="btn btn-primary" href="/dashboard/manage/podcast/delete/{{ podcast.slugfield }}">Delete</a>-->
-					<form method="POST">
-						{% csrf_token %}
-						<input id="slugfieldid" name="slugfield" type="text" value="" style="display: none;">
-						<input class="btn btn-danger" type="submit" value="Delete">
-					</form>
-				</div>
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="DeleteModalLabel">Confirm Delete</h5>
+				<button class="close" type="button" data-dismiss="modal" aria-label="Cancel">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Are you sure you want to delete this podcast?
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+				<form method="post">
+					{% csrf_token %}
+					<input id="slugfieldid" name="slugfield" type="text" value="" style="display: none;">
+					<input class="btn btn-danger" type="submit" value="Delete">
+				</form>
 			</div>
 		</div>
 	</div>
-{% endblock %}
-
-{% block js %}
-<script>
-	function populate_slugfield(slug) {
-		console.log(slug);
-		var form_field = document.getElementById('slugfieldid');
-		form_field.value = slug;
-	}
-</script>
+</div>
 {% endblock %}

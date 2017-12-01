@@ -38,8 +38,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates/'),
-            os.path.join(BASE_DIR, 'templates/admin/'),
             os.path.join(BASE_DIR, 'templates/dashboard/'),
+            os.path.join(BASE_DIR, 'templates/dashboard/admin/'),
             os.path.join(BASE_DIR, 'templates/layouts/'),
             os.path.join(BASE_DIR, 'templates/registration/'),
         ],
