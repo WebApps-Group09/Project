@@ -49,11 +49,21 @@
 				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
 				<form method="post">
 					{% csrf_token %}
-					<input id="slugfieldid" name="slugfield" type="text" value="" style="display: none;">
+					<input id="id_slugfield" name="slugfield" type="text" value="" style="display: none;">
 					<input class="btn btn-danger" type="submit" value="Delete">
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+	function populate_slugfield(slug) {
+		console.log(slug);
+		var form_field = document.getElementById('id_slugfield');
+		form_field.value = slug;
+	}
+</script>
 {% endblock %}
