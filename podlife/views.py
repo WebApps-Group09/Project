@@ -275,7 +275,7 @@ class CreateTopic(CreateView):
     template_name = 'create_topic.html'
     model = Topic
     slug_field = 'topic'
-    success_url = '/dashboard/manage/topic/'
+    success_url = '/dashboard/'
     fields = ['topic', 'description']
 
     def get_context_data(self, **kwargs):
