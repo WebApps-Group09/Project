@@ -32,5 +32,7 @@ urlpatterns = [
         url(r'^settings/$', UserSettings.as_view(), name='settings')
     ])),
     url(r'^upvote/(?P<podcast_id>[0-9]+)/$', upvote, name='upvote'),
-    url(r'^downvote/(?P<podcast_id>[0-9]+)/$', downvote, name='downvote')
+    url(r'^downvote/(?P<podcast_id>[0-9]+)/$', downvote, name='downvote'),
+    url(r'^upvote/(?P<podcast_id>[0-9]+)/(?P<origin>[a-z]+)/$', upvote, name='upvote'),
+    url(r'^downvote/(?P<podcast_id>[0-9]+)/(?P<origin>[a-z]+)/$', downvote, name='downvote')
 ]
