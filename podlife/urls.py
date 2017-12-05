@@ -33,10 +33,10 @@ urlpatterns = [
     ])),
     url(r'^upvote/', include([
         url(r'^(?P<podcast_id>[0-9]+)/$', upvote, name='upvote'),
-        url(r'^(?P<podcast_id>[0-9]+)/(?P<origin>[a-z]+)/$', upvote, name='upvote'),
+        url(r'^(?P<podcast_id>[0-9]+)/(?P<origin>[\w-]+)/$', upvote, name='upvote'),
         ])),
     url(r'^downvote/', include([
         url(r'^(?P<podcast_id>[0-9]+)/$', downvote, name='downvote'),
-        url(r'^(?P<podcast_id>[0-9]+)/(?P<origin>[a-z]+)/$', downvote, name='downvote'),
+        url(r'^(?P<podcast_id>[0-9]+)/(?P<origin>[\w-]+)/$', downvote, name='downvote'),
         ]))
 ]
