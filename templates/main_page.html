@@ -14,9 +14,11 @@
 					<!-- Upvote/Downvote Column -->
 					<div class="col-md-1 vote-col">
 						<div class="vote-group">
-							<a href="" class="vote-arrow"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
-							<h3 style="margin-bottom: 0px;">0</h3>
-							<a href="" class="vote-arrow"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+							<a href="/upvote/{{ podcast.id }}" class="vote-arrow"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+							<h3 style="margin-bottom: 0px;">
+								{{podcast.num_upvotes}} 
+							</h3>
+							<a href="/downvote/{{ podcast.id }}" class="vote-arrow"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
 						</div>
 					</div>
 					<!-- Card Column -->

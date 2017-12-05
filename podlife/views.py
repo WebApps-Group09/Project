@@ -40,6 +40,18 @@ class MainPage(ListView):
         context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
+#upvote and downvote functions to update the podcasts vote total
+def upvote(request, podcast_id):
+    podcast = Podcast.objects.get(id=podcast_id)
+    podcast.num_upvotes += 1
+    podcast.save()
+    return HttpResponseRedirect('/podcast/')
+
+def downvote(request, podcast_id):
+    podcast = Podcast.objects.get(id=podcast_id)
+    podcast.num_upvotes -= 1
+    podcast.save()
+    return HttpResponseRedirect('/podcast/')
 
 # Function called on /random/ to redirect to a random podcast
 def random(request):
