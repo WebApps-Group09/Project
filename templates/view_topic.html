@@ -7,9 +7,9 @@
     {{ topic.topic }}
     {% if user.is_authenticated %}
       {% if subscribed %}
-				<button type="submit" class="btn btn-secondary pull-right" value="subscribe" name="unsubscribe">Unsubscribe</button>
+        <a href="/topicunsubscribe/{{ topic.topic }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="unsubscribe">Unsubscribe</a>
       {% else %}
-				<button type="submit" class="btn btn-secondary pull-right" value="subscribe" name="subscribe">Subscribe</button>
+        <a href="/topicsubscribe/{{ topic.topic }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="subscribe">Subscribe</a>
       {% endif %}
     {% endif %}
   </h2>

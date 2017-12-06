@@ -15,14 +15,20 @@ class Topic(models.Model):
 
 ## User subscriptions to an individual topic
 class TopicSubscription(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
-    pod = models.ForeignKey(Topic, on_delete=models.CASCADE, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False, related_name='topicuser')
+    pod = models.ForeignKey(Topic, on_delete=models.CASCADE, editable=False, related_name='pod')
+
+    def get_model_type(self):
+        return 'topicsubscription'
 
 
 ## User subscriptions to individual creators
 class CreatorSubscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False, related_name='user')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, editable=False, related_name='creator')
+
+    def get_model_type(self):
+        return 'creatorsubscription'
 
 
 ## Podcast model functions
@@ -61,6 +67,9 @@ class Podcast(models.Model):
     updated = models.DateTimeField(default=timezone.now, editable=False)
 
     objects = PodcastManager()
+
+    def get_model_type(self):
+        return 'podcast'
 
 
 ## Comment model

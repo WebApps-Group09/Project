@@ -5,8 +5,8 @@ from django.utils import timezone
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
 
 from podlife.forms import CommentForm
-from podlife.models import Comment, Podcast, Topic, CreatorSubscription
-# from podlife.models import CreatorSubscription, TopicSubscription
+from podlife.models import Comment, Podcast, Topic, CreatorSubscription, TopicSubscription
+from itertools import chain
 
 
 # Main Pages
@@ -128,7 +128,9 @@ class UserView(ListView):
         user = self.kwargs['username']
         user_id = User.objects.get(username=user).id
         podcasts = Podcast.objects.filter(author__id=user_id)
-        return podcasts
+        usersubs = CreatorSubscription.objects.filter(user=user_id)
+        topicsubs = TopicSubscription.objects.filter(user=user_id)
+        return list(chain(podcasts, usersubs, topicsubs))
 
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
@@ -152,6 +154,16 @@ def user_unsubscribe(request, creator_username, user_id):
     CreatorSubscription.objects.filter(creator=User.objects.get(username=creator_username), user=User.objects.get(id=user_id)).delete()
     return HttpResponseRedirect('/user/' + creator_username)
 
+def topic_subscribe(request, topic, user_id):
+    entry = TopicSubscription(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id))
+    entry.save()
+    return HttpResponseRedirect('/topic/' + topic.lower())
+
+def topic_unsubscribe(request, topic, user_id):
+    TopicSubscription.objects.filter(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id)).delete()
+    return HttpResponseRedirect('/topic/' + topic.lower())
+
+
 
 # View list of podcasts from a specific pod
 class TopicView(ListView):
@@ -167,6 +179,11 @@ class TopicView(ListView):
     def get_context_data(self, **kwargs):
         context = super(TopicView, self).get_context_data(**kwargs)
         context['topic'] = Topic.objects.get(topic=self.kwargs['topic'])
+        #checking if the topic is already subscribed
+        if TopicSubscription.objects.filter(pod=context['topic'], user=self.request.user).exists():
+            context['subscribed'] = True
+        else:
+            context['subscribed'] = False
         context['topic'].topic = context['topic'].topic.title()
         context['topics'] = Topic.objects.all().order_by('topic')
         return context

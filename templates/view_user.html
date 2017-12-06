@@ -7,9 +7,9 @@
     {{ username }}
     {% if user.is_authenticated %}
       {% if subscribed %}
-        <a href="/unsubscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="unsubscribe">Unsubscribe</a>
+        <a href="/userunsubscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="unsubscribe">Unsubscribe</a>
       {% else %}
-        <a href="/subscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="subscribe">Subscribe</a>
+        <a href="/usersubscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="subscribe">Subscribe</a>
       {% endif %}
     {% endif %}
   </h2>
@@ -19,6 +19,7 @@
       <h4>Uploaded Podcasts</h4>
       <hr>
     	{% for podcast in podcasts %}
+      {% if podcast.get_model_type == 'podcast' %}
       <div class="row">
         <!-- Upvote/Downvote Column -->
         <div class="col-md-1 vote-col">
@@ -58,11 +59,29 @@
       		</div><!--/.card-->
         </div>
       </div><!--/.row-->
+      {% endif %}
     	{% endfor %}
     </div>
     <div class="col-sm-6">
       <h4>Subscriptions</h4>
       <hr>
+      <h5 align="center">Users</h5>
+      {% for sub in podcasts %}
+        {% if sub.get_model_type == 'creatorsubscription' %}
+          <center>
+          <a href="/user/{{ sub.creator }}">{{ sub.creator }}</a>
+          </center>
+        {% endif %}
+      {% endfor %}
+      <br>
+      <h5 align="center">Topics</h5>
+      {% for sub in podcasts %}
+        {% if sub.get_model_type == 'topicsubscription' %}
+          <center>
+          <a href="/topic/{{ sub.pod.topic }}">{{ sub.pod.topic }}</a>
+          </center>
+        {% endif %}
+      {% endfor %}
       {% for podcast in subscriptions %}
       <div class="row">
         <div class="card mb-4">
