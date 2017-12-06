@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
 
 from podlife.forms import CommentForm
-from podlife.models import Comment, Podcast, Topic
+from podlife.models import Comment, Podcast, Topic, CreatorSubscription
 # from podlife.models import CreatorSubscription, TopicSubscription
 
 
@@ -135,7 +135,22 @@ class UserView(ListView):
         context['titlefilter'] = self.request.GET.get('titlefilter', '')
         context['topics'] = Topic.objects.all().order_by('topic')
         context['username'] = self.kwargs['username']
+        #check if they are subscribed
+        creator = User.objects.get(username=self.kwargs['username'])
+        if CreatorSubscription.objects.filter(creator=creator, user=self.request.user).exists():
+            context['subscribed'] = True
+        else:
+            context['subscribed'] = False
         return context
+
+def user_subscribe(request, creator_username, user_id):
+    entry = CreatorSubscription(creator=User.objects.get(username=creator_username), user=User.objects.get(id=user_id))
+    entry.save()
+    return HttpResponseRedirect('/user/' + creator_username)
+
+def user_unsubscribe(request, creator_username, user_id):
+    CreatorSubscription.objects.filter(creator=User.objects.get(username=creator_username), user=User.objects.get(id=user_id)).delete()
+    return HttpResponseRedirect('/user/' + creator_username)
 
 
 # View list of podcasts from a specific pod

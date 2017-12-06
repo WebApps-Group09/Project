@@ -38,5 +38,7 @@ urlpatterns = [
     url(r'^downvote/', include([
         url(r'^(?P<podcast_id>[0-9]+)/$', downvote, name='downvote'),
         url(r'^(?P<podcast_id>[0-9]+)/(?P<origin>[\w-]+)/$', downvote, name='downvote'),
-        ]))
+        ])),
+    url(r'^subscribe/(?P<creator_username>[\w-]+)/(?P<user_id>[0-9]+)/$', user_subscribe, name='user_subscribe'),
+    url(r'^unsubscribe/(?P<creator_username>[\w-]+)/(?P<user_id>[0-9]+)/$', user_unsubscribe, name='user_unsubscribe') 
 ]
