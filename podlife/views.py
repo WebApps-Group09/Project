@@ -29,10 +29,10 @@ class MainPage(ListView):
     def get_queryset(self):
         title_filter = self.request.GET.get('titlefilter', '')
         if title_filter:
-            podcasts = Podcast.objects.filter(title__icontains=title_filter)
+            podcasts = Podcast.objects.filter(title__icontains=title_filter).order_by('-num_upvotes')
         else:
-            podcasts = Podcast.objects.all()
-        return podcasts.order_by('-views')
+            podcasts = Podcast.objects.all().order_by('-num_upvotes')
+        return podcasts.order_by('-num_upvotes')
 
     def get_context_data(self, **kwargs):
         context = super(MainPage, self).get_context_data(**kwargs)
@@ -160,12 +160,26 @@ def user_unsubscribe(request, creator_username, user_id):
     return HttpResponseRedirect('/user/' + creator_username)
 
 def topic_subscribe(request, topic, user_id):
+    #create the subscription in the table
     entry = TopicSubscription(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id))
     entry.save()
+
+    #update topic number of subs
+    topic_to_update = Topic.objects.get(topic=topic.lower())
+    topic_to_update.num_subscribers += 1
+    topic_to_update.save()
+
     return HttpResponseRedirect('/topic/' + topic.lower())
 
 def topic_unsubscribe(request, topic, user_id):
+    #delete the sub in the table
     TopicSubscription.objects.filter(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id)).delete()
+
+    #decrement number of subscribers
+    topic_to_update = Topic.objects.get(topic=topic.lower())
+    topic_to_update.num_subscribers -= 1
+    topic_to_update.save()
+    
     return HttpResponseRedirect('/topic/' + topic.lower())
 
 
