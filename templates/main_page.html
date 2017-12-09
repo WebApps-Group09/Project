@@ -16,7 +16,7 @@
 						<div class="vote-group">
 							<a href="/upvote/{{ podcast.id }}" class="vote-arrow"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
 							<h3 style="margin-bottom: 0px;">
-								{{podcast.num_upvotes}} 
+								{{podcast.num_upvotes}}
 							</h3>
 							<a href="/downvote/{{ podcast.id }}" class="vote-arrow"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
 						</div>
@@ -70,7 +70,16 @@
 							</div>
 						</form>
 					</div>
-					<a href="random/">Get Lucky</a>
+					<div class="dropdown">
+					  <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    Sort by
+					  </button>
+					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					    <a class="dropdown-item" href="#">Title</a>
+					    <a class="dropdown-item" href="#">View Count</a>
+					    <a class="dropdown-item" href="#">Upvotes</a>
+					  </div>
+					</div>
 				</div>
 			</div>
 			<!-- Categories widget -->
