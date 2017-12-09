@@ -62,7 +62,6 @@ class Podcast(models.Model):
     num_comments = models.IntegerField(default=0, editable=False)
     num_upvotes = models.IntegerField(default=0, editable=False)
     num_downvotes = models.IntegerField(default=0, editable=False)
-    num_favorites = models.IntegerField(default=0, editable=False)
     created = models.DateTimeField(default=timezone.now, editable=False)
     updated = models.DateTimeField(default=timezone.now, editable=False)
 
