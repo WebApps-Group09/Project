@@ -64,8 +64,9 @@
 							<div class="input-group">
 								<input type="text" placeholder="Search titles" class="form-control" value="{{ titlefilter }}" name="titlefilter">
 								<span class="input-group-btn">
-                  <button type="submit" class="btn btn-secondary" value="Search" name="search">Search</button>
-                </span>
+                  					<button type="submit" class="btn btn-secondary" value="Search" name="search">Search
+                  					</button>
+                				</span>
 							</div>
 						</form>
 					</div>
@@ -73,10 +74,18 @@
 					  <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    Sort by
 					  </button>
-					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					    <a class="dropdown-item" href="#">Title</a>
-					    <a class="dropdown-item" href="#">View Count</a>
-					    <a class="dropdown-item" href="#">Upvotes</a>
+					  <div class="dropdown-menu form-group" aria-labelledby="dropdownMenuButton">
+						  <form method="get" action="">
+						  	<div class="input-group">
+						  		<span class="input-group-btn">
+								    <button type="submit" class="dropdown-item btn btn-secondary" value="title" name="sorttype">Title</button>
+								    <button type="submit" class="dropdown-item btn btn-secondary" value="views" name="sorttype">View Count</button>
+								    <button type="submit" class="dropdown-item btn btn-secondary" value="upvotes" name="sorttype">Upvotes</button>
+								    <button type="submit" class="dropdown-item btn btn-secondary" value="new" name="sorttype">New</button>
+							    </span>
+
+						    </div>
+						  </form>
 					  </div>
 					</div>
 				</div>
