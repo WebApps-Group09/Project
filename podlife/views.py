@@ -137,6 +137,11 @@ class UserView(ListView):
         context['titlefilter'] = self.request.GET.get('titlefilter', '')
         context['topics'] = Topic.objects.all().order_by('topic')
         context['username'] = self.kwargs['username']
+        #check if it's themselves
+        if (str(self.request.user) == self.kwargs['username']):
+            context['is_self'] = True
+        else:
+            context['is_self'] = False
         #check if they are subscribed
         creator = User.objects.get(username=self.kwargs['username'])
         if CreatorSubscription.objects.filter(creator=creator, user=self.request.user).exists():

@@ -5,11 +5,13 @@
 <div class="container body">
   <h2>
     {{ username }}
-    {% if user.is_authenticated %}
-      {% if subscribed %}
-        <a href="/userunsubscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="unsubscribe">Unsubscribe</a>
-      {% else %}
-        <a href="/usersubscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="subscribe">Subscribe</a>
+    {% if is_self == False %} 
+      {% if user.is_authenticated %}
+          {% if subscribed %}
+            <a href="/userunsubscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="unsubscribe">Unsubscribe</a>
+          {% else %}
+            <a href="/usersubscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="subscribe">Subscribe</a>
+          {% endif %}
       {% endif %}
     {% endif %}
   </h2>
