@@ -54,7 +54,7 @@ class MainPage(ListView):
         return context
 
 
-# Upvote and downvote functions to update the podcasts vote total
+# Upvote function to update the podcasts vote total
 def upvote(request, podcast_id, origin=None):
     podcast = Podcast.objects.get(id=podcast_id)
     podcast.num_upvotes += 1
@@ -65,12 +65,12 @@ def upvote(request, podcast_id, origin=None):
     else:
         return HttpResponseRedirect('/podcast')
 
-
+#downvote function to update the podcasts vote total
 def downvote(request, podcast_id, origin=None):
     podcast = Podcast.objects.get(id=podcast_id)
     podcast.num_upvotes -= 1
     podcast.save()
-    if origin:
+    if origin: #if the origin is set, it is coming from the user page and needs to be sent back there
         return HttpResponseRedirect('/user/' + origin)
     else:
         return HttpResponseRedirect('/podcast')
@@ -169,36 +169,36 @@ class UserView(ListView):
         context['topicsubs'] = TopicSubscription.objects.filter(user=user_id)
         return context
 
-
+#subscribes a user to another user
 def user_subscribe(request, creator_username, user_id):
     entry = CreatorSubscription(creator=User.objects.get(
         username=creator_username), user=User.objects.get(id=user_id))
     entry.save()
     return HttpResponseRedirect('/user/' + creator_username)
 
-
+#unsubscribes a user from a user
 def user_unsubscribe(request, creator_username, user_id):
     CreatorSubscription.objects.filter(creator=User.objects.get(
         username=creator_username), user=User.objects.get(id=user_id)).delete()
     return HttpResponseRedirect('/user/' + creator_username)
 
-
+#unsubscribes a user from another user from the dashboard page
 def dashboard_user_unsubscribe(request, creator_username, user_id):
     CreatorSubscription.objects.filter(creator=User.objects.get(
         username=creator_username), user=User.objects.get(id=user_id)).delete()
     return HttpResponseRedirect('/dashboard/manage/subs')
 
-
+#unsubscrbies a user from a topic from the dashboard page
 def dashboard_topic_unsubscribe(request, topic, user_id):
     TopicSubscription.objects.filter(pod=Topic.objects.get(
         topic=topic.lower()), user=User.objects.get(id=user_id)).delete()
-
+    #updates the number of subscribers a topic has
     topic_to_update = Topic.objects.get(topic=topic.lower())
     topic_to_update.num_subscribers -= 1
     topic_to_update.save()
     return HttpResponseRedirect('/dashboard/manage/subs')
 
-
+#subscribes a user to a topic
 def topic_subscribe(request, topic, user_id):
     # create the subscription in the table
     entry = TopicSubscription(pod=Topic.objects.get(
@@ -212,7 +212,7 @@ def topic_subscribe(request, topic, user_id):
 
     return HttpResponseRedirect('/topic/' + topic.lower())
 
-
+#unsubscribes a user from a topic
 def topic_unsubscribe(request, topic, user_id):
     # delete the sub in the table
     TopicSubscription.objects.filter(pod=Topic.objects.get(
