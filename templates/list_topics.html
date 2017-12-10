@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}List of Topics{% endblock %}
+
+{% block body %}
+<div class="container body">
+  <h2>Topics</h2>
+	<hr>
+  {% for t in topics %}
+    <p>
+      <a href="/topic/{{ t.topic }}">{{ t.topic }}</a>
+      <small>
+        | {{ t.num_subscribers }} subscribers
+        | {{ t.num_podcasts }} podcasts
+      </small>
+    </p>
+  {% endfor %}
+{% endblock %}

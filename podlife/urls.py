@@ -4,6 +4,7 @@ from podlife.views import *
 urlpatterns = [
     url(r'^$', HomePage.as_view(), name='home'),
     url(r'^topic/', include([
+        url(r'^$', ListTopics.as_view(), name='list_topics'),
         url(r'^(?P<topic>[\w-]+)/$', TopicView.as_view()),
     ])),
     url(r'user/', include([

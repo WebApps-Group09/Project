@@ -41,9 +41,10 @@
 						Pods
 					</a>
 					<div class="dropdown-menu" aria-labelledby="topicDropdown">
-						{% for topic in topics %}
+						{% for topic in topics|slice:":5" %}
 							<a class="dropdown-item" href="/topic/{{ topic.topic }}">{{ topic.topic }}</a>
 						{% endfor %}
+						<small><em><a class="dropdown-item" href="{% url 'list_topics' %}">see more...</a></em></small>
 					</div>
 				</li>
 				<li class="nav-item">
