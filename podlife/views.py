@@ -27,14 +27,14 @@ class MainPage(ListView):
     context_object_name = 'podcasts'
 
     def get_queryset(self):
-        #filter based off of search bar
+        # filter based off of search bar
         title_filter = self.request.GET.get('titlefilter', '')
         if title_filter:
             podcasts = Podcast.objects.filter(title__icontains=title_filter)
         else:
             podcasts = Podcast.objects.all()
 
-        #filter based off of sorttype
+        # filter based off of sorttype
         if self.request.GET.get('sorttype') == None:
             return podcasts
         elif self.request.GET.get('sorttype') == 'title':
@@ -53,7 +53,8 @@ class MainPage(ListView):
         context['topics'] = Topic.objects.all().order_by('topic')
         return context
 
-#upvote and downvote functions to update the podcasts vote total
+
+# Upvote and downvote functions to update the podcasts vote total
 def upvote(request, podcast_id, origin=None):
     podcast = Podcast.objects.get(id=podcast_id)
     podcast.num_upvotes += 1
@@ -64,6 +65,7 @@ def upvote(request, podcast_id, origin=None):
     else:
         return HttpResponseRedirect('/podcast')
 
+
 def downvote(request, podcast_id, origin=None):
     podcast = Podcast.objects.get(id=podcast_id)
     podcast.num_upvotes -= 1
@@ -72,6 +74,7 @@ def downvote(request, podcast_id, origin=None):
         return HttpResponseRedirect('/user/' + origin)
     else:
         return HttpResponseRedirect('/podcast')
+
 
 # Function called on /random/ to redirect to a random podcast
 def random(request):
@@ -93,7 +96,8 @@ class PodcastView(TemplateView):
         podcast = Podcast.objects.get(slugfield=kwargs['slugfield'])
         podcast.views += 1
         podcast.save()
-        comments = Comment.objects.filter(podcast_id=podcast.id).order_by('-created')
+        comments = Comment.objects.filter(
+            podcast_id=podcast.id).order_by('-created')
         context = {}
         context['podcast'] = podcast
         context['comments'] = comments
@@ -150,12 +154,12 @@ class UserView(ListView):
         context['titlefilter'] = self.request.GET.get('titlefilter', '')
         context['topics'] = Topic.objects.all().order_by('topic')
         context['username'] = self.kwargs['username']
-        #check if it's themselves
+        # check if it's themselves
         if (str(self.request.user) == self.kwargs['username']):
             context['is_self'] = True
         else:
             context['is_self'] = False
-        #check if they are subscribed
+        # check if they are subscribed
         creator = User.objects.get(username=self.kwargs['username'])
         if CreatorSubscription.objects.filter(creator=creator, user=self.request.user).exists():
             context['subscribed'] = True
@@ -163,50 +167,61 @@ class UserView(ListView):
             context['subscribed'] = False
         return context
 
+
 def user_subscribe(request, creator_username, user_id):
-    entry = CreatorSubscription(creator=User.objects.get(username=creator_username), user=User.objects.get(id=user_id))
+    entry = CreatorSubscription(creator=User.objects.get(
+        username=creator_username), user=User.objects.get(id=user_id))
     entry.save()
     return HttpResponseRedirect('/user/' + creator_username)
 
+
 def user_unsubscribe(request, creator_username, user_id):
-    CreatorSubscription.objects.filter(creator=User.objects.get(username=creator_username), user=User.objects.get(id=user_id)).delete()
+    CreatorSubscription.objects.filter(creator=User.objects.get(
+        username=creator_username), user=User.objects.get(id=user_id)).delete()
     return HttpResponseRedirect('/user/' + creator_username)
 
+
 def dashboard_user_unsubscribe(request, creator_username, user_id):
-    CreatorSubscription.objects.filter(creator=User.objects.get(username=creator_username), user=User.objects.get(id=user_id)).delete()
+    CreatorSubscription.objects.filter(creator=User.objects.get(
+        username=creator_username), user=User.objects.get(id=user_id)).delete()
     return HttpResponseRedirect('/dashboard/manage/subs')
 
+
 def dashboard_topic_unsubscribe(request, topic, user_id):
-    TopicSubscription.objects.filter(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id)).delete()
+    TopicSubscription.objects.filter(pod=Topic.objects.get(
+        topic=topic.lower()), user=User.objects.get(id=user_id)).delete()
 
     topic_to_update = Topic.objects.get(topic=topic.lower())
     topic_to_update.num_subscribers -= 1
     topic_to_update.save()
     return HttpResponseRedirect('/dashboard/manage/subs')
 
+
 def topic_subscribe(request, topic, user_id):
-    #create the subscription in the table
-    entry = TopicSubscription(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id))
+    # create the subscription in the table
+    entry = TopicSubscription(pod=Topic.objects.get(
+        topic=topic.lower()), user=User.objects.get(id=user_id))
     entry.save()
 
-    #update topic number of subs
+    # update topic number of subs
     topic_to_update = Topic.objects.get(topic=topic.lower())
     topic_to_update.num_subscribers += 1
     topic_to_update.save()
 
     return HttpResponseRedirect('/topic/' + topic.lower())
 
-def topic_unsubscribe(request, topic, user_id):
-    #delete the sub in the table
-    TopicSubscription.objects.filter(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id)).delete()
 
-    #decrement number of subscribers
+def topic_unsubscribe(request, topic, user_id):
+    # delete the sub in the table
+    TopicSubscription.objects.filter(pod=Topic.objects.get(
+        topic=topic.lower()), user=User.objects.get(id=user_id)).delete()
+
+    # decrement number of subscribers
     topic_to_update = Topic.objects.get(topic=topic.lower())
     topic_to_update.num_subscribers -= 1
     topic_to_update.save()
 
     return HttpResponseRedirect('/topic/' + topic.lower())
-
 
 
 # View list of podcasts from a specific pod
@@ -223,7 +238,7 @@ class TopicView(ListView):
     def get_context_data(self, **kwargs):
         context = super(TopicView, self).get_context_data(**kwargs)
         context['topic'] = Topic.objects.get(topic=self.kwargs['topic'])
-        #checking if the topic is already subscribed
+        # checking if the topic is already subscribed
         if TopicSubscription.objects.filter(pod=context['topic'], user=self.request.user).exists():
             context['subscribed'] = True
         else:
@@ -235,8 +250,15 @@ class TopicView(ListView):
 
 # Dashboard for users/content creators
 # Main page with statistics recent subscriptions
-class Dashboard(LoginRequiredMixin, TemplateView):
+class Dashboard(LoginRequiredMixin, ListView):
     template_name = 'dashboard.html'
+    context_object_name = 'updates'
+
+    def get_queryset(self):
+        curr_user = User.objects.get(username=self.request.user)
+        usersubs = CreatorSubscription.objects.filter(user=curr_user)
+        topicsubs = TopicSubscription.objects.filter(user=curr_user)
+        
 
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)
@@ -251,7 +273,6 @@ class ManageSubscriptions(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         curr_user = User.objects.get(username=self.request.user)
-
         usersubs = CreatorSubscription.objects.filter(user=curr_user)
         topicsubs = TopicSubscription.objects.filter(user=curr_user)
         return list(chain(usersubs, topicsubs))

@@ -1,9 +1,31 @@
 {% extends "content_management.html" %}
+{% load staticfiles %}
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
 	<h2>Dashboard</h2>
 	<hr>
+
+	<div class="row">
+    <div class="col-sm-8">
+      <h4>Updates</h4>
+      {% for podcast in updates %}
+			{% endfor %}
+    </div>
+    <div class="col-sm-4">
+      <h4>Options</h4>
+			<ul>
+				<li><a href="{% url 'upload_podcast' %}">Upload Podcast</a></li>
+				{% if user.is_superuser %}
+				<li><a href="{% url 'create_topic' %}">Create Topic</a></li>
+				{% endif %}
+				<li><a href="{% url 'manage_subs' %}">Manage Subscriptions</a></li>
+				<li><a href="{% url 'manage_podcasts' %}">Manage Podcasts</a></li>
+				<li><a href="{% url 'settings' %}">Settings</a></li>
+			</ul>
+    </div>
+  </div>
+</div>
 </div>
 {% endblock %}
