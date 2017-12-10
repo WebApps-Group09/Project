@@ -11,12 +11,12 @@
 			{% for sub in usersubs %}
 			<div class="row">
 				<div style="padding-right:10px;">
-					<a href="/user/{{ sub.user.username }}">{{ sub.user.username }}</a>
-				</div>
-				<div style="padding-left:10px;">
 					<a href="/dashboarduserunsubscribe/{{ sub.creator }}/{{ user.id }}" class="btn btn-danger" style="color: white;" role="button">
 		        <i class="fa fa-trash-o" aria-hidden="true"></i>
 		      </a>
+				</div>
+				<div style="padding-left:10px;">
+					<a href="/user/{{ sub.user.username }}">{{ sub.user.username }}</a>
 				</div>
 			</div>
 			{% endfor %}
@@ -31,17 +31,17 @@
 			{% for sub in topicsubs %}
 			<div class="row">
 				<div style="padding-right:10px;">
-					<a href="/topic/{{ sub.pod.topic }}">{{ sub.pod.topic }}</a>
-				</div>
-				<div style="padding-left:10px;">
 					<a href="/dashboardtopicunsubscribe/{{ sub.pod.topic }}/{{ user.id }}" class="btn btn-danger" style="color: white;" role="button">
 		        <i class="fa fa-trash-o" aria-hidden="true"></i>
 		      </a>
 				</div>
+				<div style="padding-left:10px;">
+					<a href="/topic/{{ sub.pod.topic }}">{{ sub.pod.topic }}</a>
+				</div>
 			</div>
 			{% endfor %}
 			{% else %}
-				No topic Subscriptions
+				No topic subscriptions
 			{% endif %}
 		</div>
 	</div>

@@ -13,15 +13,15 @@
         {% csrf_token %}
         <div class="form-group">
           <label class="control-label" for="id_first_name"><strong>{{ form.first_name.label }}</strong></label>
-          <input type="text" class="form-control" name="first_name" value="{{ form.first_name.value }}" id="id_first_name" maxlength="30" />
+          <input type="text" class="form-control" name="first_name" value="{{ form.first_name.value }}" placeholder="{{ form.first_name.label }}" id="id_first_name" maxlength="30" />
         </div>
         <div class="form-group">
           <label class="control-label" for="id_last_name"><strong>{{ form.last_name.label }}</strong></label>
-          <input type="text" class="form-control" name="last_name" value="{{ form.last_name.value }}" id="id_last_name" maxlength="30" />
+          <input type="text" class="form-control" name="last_name" value="{{ form.last_name.value }}" placeholder="{{ form.last_name.label }}" id="id_last_name" maxlength="30" />
         </div>
         <div class="form-group">
           <label class="control-label" for="id_email"><strong>{{ form.email.label }}</strong></label>
-          <input type="email" class="form-control" name="email" value="{{ form.email.value }}" id="id_email" maxlength="254" />
+          <input type="email" class="form-control" name="email" value="{{ form.email.value }}" placeholder="{{ form.email.label }}" id="id_email" maxlength="254" />
         </div>
         <div class="form-group">
           <input class="btn btn-secondary" type="submit" value="Update" />
