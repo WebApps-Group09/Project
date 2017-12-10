@@ -20,48 +20,35 @@
     <div class="col-sm-6">
       <h4>Uploaded Podcasts</h4>
       <hr>
-    	{% for podcast in podcasts %}
-      {% if podcast.get_model_type == 'podcast' %}
-      <div class="row">
-        <!-- Upvote/Downvote Column -->
-        <div class="col-md-1 vote-col">
-          <div class="vote-group">
-              <a href="/upvote/{{ podcast.id }}/{{ username }}" class="vote-arrow"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
-              <h3 style="margin-bottom: 0px;">
-                {{podcast.num_upvotes}}
-              </h3>
-              <a href="/downvote/{{ podcast.id }}/{{ username }}" class="vote-arrow"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
-            </div>
-        </div>
-        <!-- Card Column -->
-        <div class="col-md-11">
-      		<div class="card mb-4">
-      			<div class="card-header text-muted">
-      				Posted on {{ podcast.created.date }} in
-      				<a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
-      			</div>
-      			<div class="card-body">
-      				<h2 class="card-title">{{ podcast.title }}</h2>
-      				<p class="card-text">
-      					{% if podcast.description %}
-      						{{ podcast.description | slice:":125" }}
-      						{% if podcast.description|length > 125 %}
-      							...
-      						{% endif %}
-      					{% endif %}
-              </p>
-      				<a href="/podcast/{{podcast.slugfield}}/" class="btn btn-secondary">Listen Now</a>
-      			</div><!--/.card-body-->
-      			<div class="card-footer text-muted">
-      				{{ podcast.views }} views |
-      				{{ podcast.num_upvotes }} upvotes |
-      				{{ podcast.num_comments }} comments
-      			</div><!--/.card-footer-->
-      		</div><!--/.card-->
-        </div>
-      </div><!--/.row-->
+      {% if podcasts %}
+      	{% for podcast in podcasts %}
+        <div class="card mb-4">
+          <div class="card-header text-muted">
+            Posted on {{ podcast.created.date }} in
+            <a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
+          </div>
+          <div class="card-body">
+            <h2 class="card-title">{{ podcast.title }}</h2>
+            <p class="card-text">
+              {% if podcast.description %}
+                {{ podcast.description | slice:":125" }}
+                {% if podcast.description|length > 125 %}
+                  ...
+                {% endif %}
+              {% endif %}
+            </p>
+            <a href="/podcast/{{podcast.slugfield}}/" class="btn btn-secondary">Listen Now</a>
+          </div><!--/.card-body-->
+          <div class="card-footer text-muted">
+            {{ podcast.views }} views |
+            {{ podcast.num_upvotes }} upvotes |
+            {{ podcast.num_comments }} comments
+          </div><!--/.card-footer-->
+        </div><!--/.card-->
+      	{% endfor %}
+      {% else %}
+        No uploaded podcasts
       {% endif %}
-    	{% endfor %}
     </div>
     <div class="col-sm-6">
       <h4>Subscriptions</h4>

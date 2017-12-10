@@ -258,11 +258,28 @@ class Dashboard(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         curr_user = User.objects.get(username=self.request.user)
-        usersubs = CreatorSubscription.objects.filter(user=curr_user)
-        topicsubs = TopicSubscription.objects.filter(user=curr_user)
-        subs = list(chain(usersubs, topicsubs))
-        for sub in subs:
-            print(sub)
+        usersubs = CreatorSubscription.objects.values_list('creator', flat=True).filter(user=curr_user)
+        topicsubs = TopicSubscription.objects.values_list('pod', flat=True).filter(user=curr_user)
+        if usersubs or topicsubs:
+            # initial query
+            sql = 'SELECT * FROM podlife_podcast WHERE'
+            # add user subs
+            if usersubs:
+                sql += ' author_id=%s' % usersubs[0]
+                for sub in usersubs[1:]:
+                    sql += ' OR author_id=%s' % sub
+            # add topic subs
+            if topicsubs:
+                if usersubs:  # build off the previously constructed query string
+                    sql += ' OR'
+                sql += ' topic_id=%s' % topicsubs[0]
+                for sub in topicsubs[1:]:
+                    sql += ' OR topic_id=%s' % sub
+            # order by the most recently updated, then alphabetically by title
+            sql += ' ORDER BY updated DESC, title ASC'
+            # print(sql)
+            return Podcast.objects.raw(sql)
+        return []  # no subscriptions
 
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)

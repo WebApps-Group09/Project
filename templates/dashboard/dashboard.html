@@ -4,13 +4,37 @@
 
 {% block content %}
 <div class="container-fluid">
-	<h2>Dashboard</h2>
+	<h2>Welcome, {{ user.username }}</h2>
 	<hr>
 	<div class="row">
     <div class="col-sm-8">
       <h4>Updates</h4>
 			{% if updates %}
 	      {% for podcast in updates %}
+				<div class="card mb-4">
+					<div class="card-header text-muted">
+						Posted on {{ podcast.created.date }} in
+						<a href="/user/{{ podcast.author }}">{{ podcast.author }}</a> in
+						<a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
+					</div>
+					<div class="card-body">
+						<h2 class="card-title">{{ podcast.title }}</h2>
+						<p class="card-text">
+							{% if podcast.description %}
+								{{ podcast.description | slice:":125" }}
+								{% if podcast.description|length > 125 %}
+									...
+								{% endif %}
+							{% endif %}
+						</p>
+						<a href="/podcast/{{podcast.slugfield}}/" class="btn btn-secondary">Listen Now</a>
+					</div><!--/.card-body-->
+					<div class="card-footer text-muted">
+						{{ podcast.views }} views |
+						{{ podcast.num_upvotes }} upvotes |
+						{{ podcast.num_comments }} comments
+					</div><!--/.card-footer-->
+				</div><!--/.card-->
 				{% endfor %}
 			{% else %}
 				No subscriptions found
