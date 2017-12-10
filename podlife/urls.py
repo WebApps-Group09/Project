@@ -42,5 +42,7 @@ urlpatterns = [
     url(r'^usersubscribe/(?P<creator_username>[\w-]+)/(?P<user_id>[0-9]+)/$', user_subscribe, name='user_subscribe'),
     url(r'^userunsubscribe/(?P<creator_username>[\w-]+)/(?P<user_id>[0-9]+)/$', user_unsubscribe, name='user_unsubscribe'),
     url(r'^topicsubscribe/(?P<topic>[\w-]+)/(?P<user_id>[0-9]+)/$', topic_subscribe, name='topic_subscribe'),
-    url(r'^topicunsubscribe/(?P<topic>[\w-]+)/(?P<user_id>[0-9]+)/$', topic_unsubscribe, name='topic_unsubscribe')
+    url(r'^topicunsubscribe/(?P<topic>[\w-]+)/(?P<user_id>[0-9]+)/$', topic_unsubscribe, name='topic_unsubscribe'),
+    url(r'^dashboarduserunsubscribe/(?P<creator_username>[\w-]+)/(?P<user_id>[0-9]+)/$', dashboard_user_unsubscribe, name='dashboard_user_unsubscribe'),
+    url(r'^dashboardtopicunsubscribe/(?P<topic>[\w-]+)/(?P<user_id>[0-9]+)/$', dashboard_topic_unsubscribe, name='dashboard_topic_unsubscribe')
 ]

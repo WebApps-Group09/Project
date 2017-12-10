@@ -172,6 +172,18 @@ def user_unsubscribe(request, creator_username, user_id):
     CreatorSubscription.objects.filter(creator=User.objects.get(username=creator_username), user=User.objects.get(id=user_id)).delete()
     return HttpResponseRedirect('/user/' + creator_username)
 
+def dashboard_user_unsubscribe(request, creator_username, user_id):
+    CreatorSubscription.objects.filter(creator=User.objects.get(username=creator_username), user=User.objects.get(id=user_id)).delete()
+    return HttpResponseRedirect('/dashboard/manage/subs')
+
+def dashboard_topic_unsubscribe(request, topic, user_id):
+    TopicSubscription.objects.filter(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id)).delete()
+
+    topic_to_update = Topic.objects.get(topic=topic.lower())
+    topic_to_update.num_subscribers -= 1
+    topic_to_update.save()
+    return HttpResponseRedirect('/dashboard/manage/subs')
+
 def topic_subscribe(request, topic, user_id):
     #create the subscription in the table
     entry = TopicSubscription(pod=Topic.objects.get(topic=topic.lower()), user=User.objects.get(id=user_id))
@@ -233,8 +245,16 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
 
 # View a list of subscriptions and updates
-class ManageSubscriptions(LoginRequiredMixin, TemplateView):
+class ManageSubscriptions(LoginRequiredMixin, ListView):
     template_name = 'manage_subscriptions.html'
+    context_object_name = 'subs'
+
+    def get_queryset(self):
+        curr_user = User.objects.get(username=self.request.user)
+
+        usersubs = CreatorSubscription.objects.filter(user=curr_user)
+        topicsubs = TopicSubscription.objects.filter(user=curr_user)
+        return list(chain(usersubs, topicsubs))
 
     def get_context_data(self, **kwargs):
         context = super(ManageSubscriptions, self).get_context_data(**kwargs)
