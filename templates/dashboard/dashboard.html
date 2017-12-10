@@ -6,12 +6,15 @@
 <div class="container-fluid">
 	<h2>Dashboard</h2>
 	<hr>
-
 	<div class="row">
     <div class="col-sm-8">
       <h4>Updates</h4>
-      {% for podcast in updates %}
-			{% endfor %}
+			{% if updates %}
+	      {% for podcast in updates %}
+				{% endfor %}
+			{% else %}
+				No subscriptions found
+			{% endif %}
     </div>
     <div class="col-sm-4">
       <h4>Options</h4>

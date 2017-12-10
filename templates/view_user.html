@@ -5,7 +5,7 @@
 <div class="container body">
   <h2>
     {{ username }}
-    {% if is_self == False %} 
+    {% if is_self == False %}
       {% if user.is_authenticated %}
           {% if subscribed %}
             <a href="/userunsubscribe/{{ username }}/{{ user.id }}" class="btn btn-secondary pull-right" value="subscribe" name="unsubscribe">Unsubscribe</a>
@@ -28,7 +28,7 @@
           <div class="vote-group">
               <a href="/upvote/{{ podcast.id }}/{{ username }}" class="vote-arrow"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
               <h3 style="margin-bottom: 0px;">
-                {{podcast.num_upvotes}} 
+                {{podcast.num_upvotes}}
               </h3>
               <a href="/downvote/{{ podcast.id }}/{{ username }}" class="vote-arrow"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
             </div>
@@ -55,7 +55,7 @@
       			<div class="card-footer text-muted">
       				{{ podcast.views }} views |
       				{{ podcast.num_upvotes }} upvotes |
-      				{{ podcast.num_comments }} comments 
+      				{{ podcast.num_comments }} comments
       			</div><!--/.card-footer-->
       		</div><!--/.card-->
         </div>
@@ -66,51 +66,22 @@
     <div class="col-sm-6">
       <h4>Subscriptions</h4>
       <hr>
-      <h5 align="center">Users</h5>
-      {% for sub in podcasts %}
-        {% if sub.get_model_type == 'creatorsubscription' %}
-          <center>
-          <a href="/user/{{ sub.creator }}">{{ sub.creator }}</a>
-          </center>
+      {% if usersubs or topicsubs %}
+        {% if usersubs %}
+          <h5>Users</h5>
+          {% for sub in usersubs %}
+            <a href="/user/{{ sub.creator }}">{{ sub.creator }}</a><br>
+          {% endfor %}
         {% endif %}
-      {% endfor %}
-      <br>
-      <h5 align="center">Topics</h5>
-      {% for sub in podcasts %}
-        {% if sub.get_model_type == 'topicsubscription' %}
-          <center>
-          <a href="/topic/{{ sub.pod.topic }}">{{ sub.pod.topic }}</a>
-          </center>
-        {% endif %}
-      {% endfor %}
-      {% for podcast in subscriptions %}
-      <div class="row">
-        <div class="card mb-4">
-          <div class="card-header text-muted">
-            Posted on {{ podcast.created.date }} in
-            <a href="/topic/{{ podcast.topic.topic }}">{{ podcast.topic.topic }}</a>
-          </div>
-          <div class="card-body">
-            <h2 class="card-title">{{ podcast.title }}</h2>
-            <p class="card-text">
-              {% if podcast.description %}
-                {{ podcast.description | slice:":125" }}
-                {% if podcast.description|length > 125 %}
-                  ...
-                {% endif %}
-              {% endif %}
-            </p>
-            <a href="/podcast/{{podcast.slugfield}}/" class="btn btn-secondary">Listen Now</a>
-          </div><!--/.card-body-->
-          <div class="card-footer text-muted">
-            {{ podcast.views }} views |
-            {{ podcast.num_upvotes }} upvotes |
-            {{ podcast.num_comments }} comments |
-            {{ podcast.num_favorites }} favorites
-          </div><!--/.card-footer-->
-        </div><!--/.card-->
-      </div>
-      {% endfor %}
+        {% if topicsubs %}
+        <h5>Topics</h5>
+        {% for sub in topicsubs %}
+          <a href="/topic/{{ sub.pod.topic }}">{{ sub.pod.topic }}</a><br>
+        {% endfor %}
+      {% endif %}
+    {% else %}
+      No subscriptions
+    {% endif %}
     </div>
   </div>
 </div>

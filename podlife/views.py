@@ -145,9 +145,7 @@ class UserView(ListView):
         user = self.kwargs['username']
         user_id = User.objects.get(username=user).id
         podcasts = Podcast.objects.filter(author__id=user_id)
-        usersubs = CreatorSubscription.objects.filter(user=user_id)
-        topicsubs = TopicSubscription.objects.filter(user=user_id)
-        return list(chain(podcasts, usersubs, topicsubs))
+        return podcasts
 
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
@@ -165,6 +163,10 @@ class UserView(ListView):
             context['subscribed'] = True
         else:
             context['subscribed'] = False
+
+        user_id = User.objects.get(username=self.kwargs['username']).id
+        context['usersubs'] = CreatorSubscription.objects.filter(user=user_id)
+        context['topicsubs'] = TopicSubscription.objects.filter(user=user_id)
         return context
 
 
@@ -258,7 +260,9 @@ class Dashboard(LoginRequiredMixin, ListView):
         curr_user = User.objects.get(username=self.request.user)
         usersubs = CreatorSubscription.objects.filter(user=curr_user)
         topicsubs = TopicSubscription.objects.filter(user=curr_user)
-        
+        subs = list(chain(usersubs, topicsubs))
+        for sub in subs:
+            print(sub)
 
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)
@@ -267,19 +271,16 @@ class Dashboard(LoginRequiredMixin, ListView):
 
 
 # View a list of subscriptions and updates
-class ManageSubscriptions(LoginRequiredMixin, ListView):
+class ManageSubscriptions(LoginRequiredMixin, TemplateView):
     template_name = 'manage_subscriptions.html'
-    context_object_name = 'subs'
-
-    def get_queryset(self):
-        curr_user = User.objects.get(username=self.request.user)
-        usersubs = CreatorSubscription.objects.filter(user=curr_user)
-        topicsubs = TopicSubscription.objects.filter(user=curr_user)
-        return list(chain(usersubs, topicsubs))
 
     def get_context_data(self, **kwargs):
         context = super(ManageSubscriptions, self).get_context_data(**kwargs)
         context['topics'] = Topic.objects.all().order_by('topic')
+
+        curr_user = User.objects.get(username=self.request.user)
+        context['usersubs'] = CreatorSubscription.objects.filter(user=curr_user)
+        context['topicsubs'] = TopicSubscription.objects.filter(user=curr_user)
         return context
 
 

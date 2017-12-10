@@ -1,52 +1,49 @@
-{% extends "content_management.html" %}
-{% block title %}Manage Subscriptions{% endblock %}
-
-{% block content %}
+{% extends "content_management.html" %} {% block title %}Manage Subscriptions{% endblock %} {% block content %}
 <div class="container-fluid">
 	<h2>Manage Subscriptions</h2>
 	<hr>
 	<!-- List all subscriptions for the current user -->
-	<h5 align="left">Users</h5>
-    <hr>
-    {% for sub in subs %}
-        {% if sub.get_model_type == 'creatorsubscription' %}
-          <div class="row">
-                <div style="padding-right:10px;">
-                   <a href="/user/{{ sub.user.username }}">{{ sub.user.username }}</a> 
-                </div>
-                <div style="padding-left:10px;">
-                    <a href="/dashboarduserunsubscribe/{{ sub.creator }}/{{ user.id }}" class="btn btn-danger" style="color: white;" role="button">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-            <hr>
-        {% endif %}
-    {% endfor %}
-      <!--{% for sub in subs %}
-        {% if sub.get_model_type == 'creatorsubscription' %}
-          <center>
-          <a href="/user/{{ sub.creator }}">{{ sub.creator }}</a>
-          </center>
-        {% endif %}
-      {% endfor %}
-      -->
-      <br>
-      <h5 align="left">Topics</h5>
-      {% for sub in subs %}
-        {% if sub.get_model_type == 'topicsubscription' %}
-          <div class="row">
-                <div style="padding-right:10px;">
-                   <a href="/topic/{{ sub.pod.topic }}">{{ sub.pod.topic }}</a> 
-                </div>
-                <div style="padding-left:10px;">
-                    <a href="/dashboardtopicunsubscribe/{{ sub.pod.topic }}/{{ user.id }}" class="btn btn-danger" style="color: white;" role="button">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-            <hr>
-        {% endif %}
-    {% endfor %}
+	<div class="row">
+    <div class="col-sm-6">
+			<h5 align="left">Users</h5>
+			<hr>
+			{% if usersubs %}
+			{% for sub in usersubs %}
+			<div class="row">
+				<div style="padding-right:10px;">
+					<a href="/user/{{ sub.user.username }}">{{ sub.user.username }}</a>
+				</div>
+				<div style="padding-left:10px;">
+					<a href="/dashboarduserunsubscribe/{{ sub.creator }}/{{ user.id }}" class="btn btn-danger" style="color: white;" role="button">
+		        <i class="fa fa-trash-o" aria-hidden="true"></i>
+		      </a>
+				</div>
+			</div>
+			{% endfor %}
+			{% else %}
+				No user subscriptions
+			{% endif %}
+		</div>
+		<div class="col-sm-6">
+			<h5 align="left">Topics</h5>
+			<hr>
+			{% if topicsubs %}
+			{% for sub in topicsubs %}
+			<div class="row">
+				<div style="padding-right:10px;">
+					<a href="/topic/{{ sub.pod.topic }}">{{ sub.pod.topic }}</a>
+				</div>
+				<div style="padding-left:10px;">
+					<a href="/dashboardtopicunsubscribe/{{ sub.pod.topic }}/{{ user.id }}" class="btn btn-danger" style="color: white;" role="button">
+		        <i class="fa fa-trash-o" aria-hidden="true"></i>
+		      </a>
+				</div>
+			</div>
+			{% endfor %}
+			{% else %}
+				No topic Subscriptions
+			{% endif %}
+		</div>
+	</div>
 </div>
 {% endblock %}
