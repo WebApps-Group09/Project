@@ -27,10 +27,19 @@
           <strong>Created:</strong> {{ podcast.created.date|date:"m/d/y" }}<br>
           <strong>Updated:</strong> {{ podcast.updated.date|date:"m/d/y" }}<br>
           <strong>Views:</strong> {{ podcast.views }}<br>
-          <strong>Comments:</strong> {{ podcast.num_comments }}
+          <strong>Comments:</strong> {{ podcast.num_comments }} <br>
+		  <strong>Upvotes:</strong> {{ podcast.num_upvotes }}
         </em>
       </small>
     </div>
+  </div><!--/.row-->
+  <br>
+  <!-- Upvote/Downvote-->
+  <div class="row">
+	<div class="col-sm-12">
+		<a href="/upvote/{{ podcast.slugfield }}/podcast" class="btn btn-secondary" id="upvote-btn" style="min-width: 100px;">Upvote</a>
+		<a href="/downvote/{{ podcast.slugfield }}/podcast" class="btn btn-secondary" id="downvote-btn">Downvote</a>
+	</div>
   </div><!--/.row-->
   <hr>
   <h3>Comments</h3>

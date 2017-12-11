@@ -33,12 +33,12 @@ urlpatterns = [
         url(r'^settings/$', UserSettings.as_view(), name='settings')
     ])),
     url(r'^upvote/', include([
-        url(r'^(?P<podcast_id>[0-9]+)/$', upvote, name='upvote'),
-        url(r'^(?P<podcast_id>[0-9]+)/(?P<origin>[\w-]+)/$', upvote, name='upvote'),
+        url(r'^(?P<slugfield>[\w-]+)/$', upvote, name='upvote'),
+        url(r'^(?P<slugfield>[\w-]+)/(?P<origin>[\w-]+)/$', upvote, name='upvote'),
         ])),
     url(r'^downvote/', include([
-        url(r'^(?P<podcast_id>[0-9]+)/$', downvote, name='downvote'),
-        url(r'^(?P<podcast_id>[0-9]+)/(?P<origin>[\w-]+)/$', downvote, name='downvote'),
+        url(r'^(?P<slugfield>[\w-]+)/$', downvote, name='downvote'),
+        url(r'^(?P<slugfield>[\w-]+)/(?P<origin>[\w-]+)/$', downvote, name='downvote'),
         ])),
     url(r'^usersubscribe/(?P<creator_username>[\w-]+)/(?P<user_id>[0-9]+)/$', user_subscribe, name='user_subscribe'),
     url(r'^userunsubscribe/(?P<creator_username>[\w-]+)/(?P<user_id>[0-9]+)/$', user_unsubscribe, name='user_unsubscribe'),
