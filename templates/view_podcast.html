@@ -35,12 +35,14 @@
   </div><!--/.row-->
   <br>
   <!-- Upvote/Downvote-->
+  {% if user.is_authenticated %}
   <div class="row">
 	<div class="col-sm-12">
 		<a href="/upvote/{{ podcast.slugfield }}/podcast" class="btn btn-secondary" id="upvote-btn" style="min-width: 100px;">Upvote</a>
 		<a href="/downvote/{{ podcast.slugfield }}/podcast" class="btn btn-secondary" id="downvote-btn">Downvote</a>
 	</div>
   </div><!--/.row-->
+  {% endif %}
   <hr>
   <h3>Comments</h3>
   {% if user.is_authenticated %}
